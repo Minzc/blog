@@ -1,0 +1,17 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/zicun-cong-390086a4/
+    - icon: github
+      text: Github
+      href: https://github.com/Minzc
+
+---
+
+Welcome to my blog! This is Zicun Cong. I'm a staff data scientist at a cyber security company, where I spend my days using machine learning to protect businesses and individuals from digital threats. Prior to that I spent several years pursuasing my PhD in trustworthy machine learning with a specific focus on model interpretability and fairness. I have broad interest in end to end data science, including cloud computing, database, data mining and machine learning.
+Outside of work, I'm passionate about sharing my knowledge and insights with others who are interested in the intersection of data science and cyber security.
