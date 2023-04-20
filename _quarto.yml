@@ -1,15 +1,20 @@
 project:
   type: website
+  output-dir: docs
 
 website:
-  title: "blog"
+  title: "Minzc"
   navbar:
     right:
       - about.qmd
+      - href: index.qmd
+        text: Home
+      - icon: linkedin
+        text: LinkedIn
+        href: https://www.linkedin.com/in/zicun-cong-390086a4/
       - icon: github
-        href: https://github.com/
-      - icon: twitter
-        href: https://twitter.com
+        text: Github
+        href: https://github.com/Minzc
 format:
   html:
     theme: cosmo
