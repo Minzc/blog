@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Welcome to my blog! This is Zicun Cong. I’m a staff data scientist at a cyber security company, where I spend my days using machine learning to protect businesses and individuals from digital threats. Prior to that I spent several years pursuasing my PhD in trustworthy machine learning with a specific focus on model interpretability and fairness. I have broad interest in end to end data science, including cloud computing, database, data mining and machine learning. Outside of work, I’m passionate about sharing my knowledge and insights with others who are interested in the intersection of data science and cyber security."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "This is a post with executable code."
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  }
+]
