@@ -6,9 +6,9 @@ website:
   title: "Minzc"
   navbar:
     right:
-      - about.qmd
       - href: index.qmd
         text: Home
+      - about.qmd
       - icon: linkedin
         text: LinkedIn
         href: https://www.linkedin.com/in/zicun-cong-390086a4/

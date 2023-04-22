@@ -1,5 +1,5 @@
 ---
-title: "blog"
+# title: "Minzc"
 listing:
   contents: posts
   sort: "date desc"

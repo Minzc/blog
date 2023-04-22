@@ -1,0 +1,181 @@
+---
+title: "Federated Malicious URL Detection with Flower and Transformers"
+author: "Zicun Cong"
+date: "2023-04-21"
+categories: [code, nlp, federated learning]
+format:
+    html:
+        code-overflow: scroll
+        code-block-border-left: true
+        code-block-bg: true
+        highlight-style: github
+        code-line-numbers: true
+        code-fold: true
+---
+
+# Introduction
+
+Cybersecurity is becoming increasingly important in today's digital landscape, and malicious URLs are one of the most common ways for attackers to compromise user systems. 
+Traditionally, to buil a malicious URL detection model, a large amount of user data needs to be collected and stored at a centarlized server, which poses a significant privacy risk, especially for agencies with highly sensitive information, like banks. Despite the fact that individual users can create their own URL classifiers using their own data, the performance of these classifiers is often unsatisfactory due to the limited amount of data available to each user. Federated learning is a technique that enables users to collaboratively create a classifier that utilizes their large datasets while also prevsering data privacy. 
+
+In this project, we demonstrate the use of federated learning and transformers for malicious URL detection using the popuarly used [Flower](https://flower.dev) and [Hugging Face Transformers](https://huggingface.co) libraries.
+
+# Federated Learning
+
+Federated learning provides a solution to this problem by enabling multiple devices (*also named as participants*) to collaboratively train a model without sharing their raw data. In particular, federated learning is a distributed machine learning approach that enables multiple devices to collaboratively train a model without sharing their raw data. In this way, federated learning preserves the privacy of each device's data while still allowing for the development of a robust model.
+
+The figure below demonstrate an example of federated learning. The central server maintains a machine learning model. 
+It's important to note that the model structure is common knowledge among the devices. During each epoch of model training, the central server sends the current model parameters to the devices. The devices then use these parameters to create their local models, which they train using their own local data. Once the local models have been trained, the devices send their updated model parameters back to the central server. The central server aggregates the updated parameters from all devices and uses them to update the global model.
+
+The arrows in the figure connecting the devices to the server represent the exchange of model updates or parameters between the devices and the central server. This exchange is a critical component of federated learning, as it allows each device to contribute its own data and knowledge to the overall model without revealing its raw data to other devices or the central server. By training the model collaboratively in this way, federated learning can achieve high levels of accuracy while preserving the privacy of individual user data.
+
+|![Example of Federated Learning](federated_learning.png)|
+|:--:|
+|[Image source](https://shreyansh26.github.io/post/2021-12-18_federated_optimization_fedavg/)|
+
+<!-- # Transfomer -->
+
+<!-- Transformers are a type of neural networks that has shown great success in NLP tasks, such as translation and sentiment analysis. By fine-tuning pre-trained transformer models on our dataset of malicious and benign URLs, we can build a model that can accurately detect malicious URLs based on their linguistic features. -->
+
+If you are ready, here we go to the implentation!
+
+
+
+
+# Implementation
+
+The project consists of three major components.
+
+- `client.py` includes functions and classes used by clients for local model training.
+- `server.py` includes functions and classes used by the central server for model parameter aggregation.
+- `util.py` includes utility functions.
+
+The code for the project, along with installation instructions for the required libraries, is available on GitHub.
+
+## Client Function
+
+The `Client` interface serves as the primary means of communication between the central server and clients. To reduce computation and communication cost, only a subset of clients are selected for model training during each epoch (also known as a communication round). The central server sends the parameters of the global model and the training instructions to the selected clients over the network. The selected clients then perform model training and evaluation using their local data and send the updated model parameters back to the central server.
+
+Implementing `Client` interface typically involves defining the following methods (although set_parameters is optional):
+
+1. get_parameters: return the model weight as a list of NumPy ndarrays
+2. set_parameters (optional): update the local model weights with the parameters received from the server
+3. fit: performs four operations
+   1. set the local model weights
+   2. train the local model
+   3. receive the updated local model weights
+4. evaluate
+test the local model
+
+```python
+class MalURLClient(fl.client.NumPyClient):
+    def __init__(self, cid, net, trainloader, valloader):
+        """
+        Parameters
+        ----------
+        cid: 
+            Client ID
+        net: 
+            Model object
+        trainloader: 
+            Dataloader for local training dataset
+        valloader: 
+            Dataloader for validation dataset
+        """
+        self.net = net
+        self.trainloader = trainloader
+        self.testloader = valloader
+        self.cid = cid
+
+    def get_parameters(self, config):
+        """
+        Parameters
+        ----------
+        config:
+            Configuration parameters requested by the server.
+            This can be used to tell the client which parameters
+            are needed along with some Scalar attributes.
+        Returns
+        -------
+        parameters: 
+            The local model parameters as a list of NumPy ndarrays.
+        """
+        return [val.cpu().numpy() for _, val in self.net.state_dict().items()]
+
+    def set_parameters(self, net, parameters):
+        """
+        Parameters
+        ----------
+        net: 
+            The model to be trained
+        parameters: 
+            The model paremters received from the central server
+        """
+        params_dict = zip(net.state_dict().keys(), parameters)
+        state_dict = OrderedDict({k: torch.Tensor(v) for k, v in params_dict})
+        net.load_state_dict(state_dict, strict=True)
+        return net
+
+    def fit(self, parameters, config):
+        """
+        Parameters
+        ----------
+        parameters: 
+            The model parameters received from the central server
+        config: 
+            Configuration parameters which allow the
+            server to influence training on the client. It can be used to communicate arbitrary values from the server to the client, for example, to set the number of (local) training epochs.
+        Returns
+        -------
+        parameters: 
+            The locally updated model parameters.
+        num_examples:
+            The number of examples used for training.
+        metrics:
+            A dictionary mapping arbitrary string keys to values of type
+            bool, bytes, float, int, or str. It can be used to communicate
+            arbitrary values back to the server.
+        """
+        set_parameters(net, parameters)
+        print("Training Started...")
+        train_client(self.net, self.trainloader, epochs=1)
+        print("Training Finished.")
+        return self.get_parameters(config), len(self.trainloader), {}
+
+    def evaluate(self, parameters, config):
+        """
+        Evaluate the provided parameters using the locally held dataset.
+        Parameters
+        ----------
+        parameters :
+            The current (global) model parameters.
+        config : 
+            Same as the config in fit function
+        Returns
+        -------
+        loss : float
+            The evaluation loss of the model on the local dataset.
+        num_examples : int
+            The number of examples used for evaluation.
+        metrics : Dict[str, Scalar]
+            A dictionary mapping arbitrary string keys to values of
+            type bool, bytes, float, int, or str. It can be used to
+            communicate arbitrary values back to the server.
+        """
+        self.net = set_parameters(net, parameters)
+        # test function is defined in the utility file.
+        valid_loss, valid_accuracy, valid_f1 = test(self.net, self.valloader)
+        metrics = {
+            "valid_accuracy": float(valid_accuracy), 
+            "valid_loss": float(valid_loss),
+            'valid_f1': float(valid_f1),
+        }
+        return float(valid_loss), len(self.testloader), rsmetricst
+```
+
+
+
+As in the first post, we’re going to start by writing a helper file named flower_helpers.py where most of our functions will be located. Starting with imports:
+
+All the libraries needed are here: Flower (flwr), Torch + Torchivision, Numpy, and Opacus. Some others are for typing concerns. You can notice we imported FedAvg from Flower, which is the strategy used by the library to define how weights are updated in the federated process. We need to create our strategy to adapt to the DP case. From Opacus only two things are imported: the PrivacyEngine and the sampler. The engine will let us attach it to any torch optimizer to perform the DP-SGD steps on it. As for the sampler, we will see about it in a while. The next step is defining our device for the model:
+
