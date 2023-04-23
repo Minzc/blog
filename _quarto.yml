@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Zicun Cong"
+  title: "Zicun Cong's Homepage"
   navbar:
     right:
       - href: index.qmd
@@ -16,8 +16,14 @@ website:
       - icon: github
         text: Github
         href: https://github.com/Minzc
+  page-footer: 
+    background: light
+    center: 
+      - "Last Update Aug. 2022"
+
 format:
   html:
+    page-layout: full
     theme: cosmo
     css: styles.css
 
