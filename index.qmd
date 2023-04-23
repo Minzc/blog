@@ -1,6 +1,9 @@
 ---
 title: "Zicun Cong"
 image: zicun.jpg
+format:
+  html:
+    toc: false
 about: 
   template: trestles
   image-shape: rounded
