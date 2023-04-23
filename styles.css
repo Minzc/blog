@@ -1,4 +1,23 @@
 /* css styles */
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 35px;
+}
+
+body {
+    line-height: 1.5; 
+    font-size: 19.5px;
+}
+
+.large-text {
+    font-size: 20px;
+}
+
 .sourceCode {
     max-height: 300px;
     overflow-y: auto;

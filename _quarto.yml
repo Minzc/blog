@@ -24,9 +24,12 @@ website:
 format:
   html:
     page-layout: full
-    theme: cosmo
+    theme: cosmo   
+    # theme: 
+      # - green_theme.scss
     css: styles.css
     toc: true
+    # mainfont: Nunito
 
 
 
