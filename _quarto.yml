@@ -3,12 +3,13 @@ project:
   output-dir: docs
 
 website:
-  title: "Minzc"
+  title: "Zicun Cong"
   navbar:
     right:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: posts.qmd
+        text: Blog
       - icon: linkedin
         text: LinkedIn
         href: https://www.linkedin.com/in/zicun-cong-390086a4/

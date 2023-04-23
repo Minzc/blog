@@ -6,5 +6,19 @@
       "/posts/post-with-code/index.html",
       "/posts/welcome/index.html"
     ]
+  },
+  {
+    "listing": "/index_bak.html",
+    "items": [
+      "/posts/fed_trans/index.html",
+      "/posts/post-with-code/index.html",
+      "/posts/welcome/index.html"
+    ]
+  },
+  {
+    "listing": "/posts.html",
+    "items": [
+      "/posts/fed_trans/index.html"
+    ]
   }
 ]

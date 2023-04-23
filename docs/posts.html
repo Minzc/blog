@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Zicun Cong</title>
+<title>Minzc – posts</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,9 +30,12 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
@@ -57,12 +60,43 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -70,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Zicun Cong</span>
+    <span class="navbar-title">Minzc</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -80,11 +114,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./posts.html" rel="" target="">
+    <a class="nav-link active" href="./posts.html" rel="" target="" aria-current="page">
  <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
@@ -105,82 +139,69 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="code">code <span class="quarto-category-count">(1)</span></div><div class="category" data-category="federated learning">federated learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nlp">nlp <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<div class="quarto-about-trestles">
-  <div class="about-entity">
-    <img src="zicun.jpg" class="about-image
-  rounded " style="width: 16em;">
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Zicun Cong</h1>
-</div>
-<div class="quarto-title-meta">
-  </div>
-</header>
-    <div class="about-links">
-  <a href="https://www.linkedin.com/in/zicuncong/" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="https://github.com/Minzc" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">GitHub</span>
-  </a>
-  <a href="mailto:congzicun@gmail.com" class="about-link" rel="" target="">
-    <i class="bi bi-envelope"></i>
-     <span class="about-link-text">Email</span>
-  </a>
-</div>
-  </div>
-  <div class="about-contents"><main class="content" id="quarto-document-content">
-<section id="hi-there" class="level3">
-<h3 data-anchor-id="hi-there">Hi there!</h3>
-<p>
-I’m a Staff Software Engineer at <a href="https://www.fortinet.com" target="_blank" style="">Fortinet</a>, in charge of developing Machine Learning models for cybersecurity threats detection and prevention. I am passionate about developing Data Mining and Machine Learning algorithms that can extract insights from very large scale log data, graphs and text corpus, such as Frequent Pattern Mining and Graph Neural Networks. Prior to Fortinet, I worked at <a href="https://www.datastory.com.cn" target="_blank" style="">Datastory</a> as a software engineer, working on analyzing social network data.
-</p>
-<p>
-I received my Ph.D.&nbsp;in Computing Science from Simon Fraser University in 2022, advised by Professor <a href="https://sites.google.com/view/jpei/jian-peis-homepage" target="_blank" style="">Jian Pei</a>. Prior to that, I obtained my Master degree in Computing Science from Simon Fraser University and Bachelor degree from the School of Software Engineering, Sun Yat-sen University.
-</p>
-<p>
-Please visit <a href="Zicun_Resume.pdf" target="_blank">here</a> for my full CV.
-</p>
-</section>
-<section id="research-interest" class="level3">
-<h3 data-anchor-id="research-interest">Research Interest</h3>
-<p>I am interested in Cloud Computing, Trustworhty Data Analytics, and Data Pricing. My current focuses include:</p>
-<ul>
-<li>Interpretation on deep neural networks and statistical hypothesis</li>
-<li>Fairness on graph neural networks</li>
-<li>Efficient, scalable, and interpretable data pricing models</li>
-<li>Computation infrastructure for ML and MLOp</li>
-</ul>
-</section>
-<section id="publications" class="level3">
-<h3 data-anchor-id="publications">Publications</h3>
-<ul>
-<li><strong>Zicun Cong</strong>, Baoxu Shi, Shan Li, Jaewon Yang, Jian Pei, Qi He. “FairSample: Training Fair and Accurate Graph Neural Networks Efficiently.” Under review</li>
-<li>Jay Xu, Jian Pei, <strong>Zicun Cong</strong>. “Finding Multidimensional Simpson’s Paradox.” SIGKDD Explorations <br> <u><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4231689" target="_blank">[paper]</a></u></li>
-<li>Xuan Luo, Jian Pei, <b>Zicun Cong</b>, Cheng Xu. “On Shapley Value in Data Assemblage Under Independent Utility.” Proc. VLDB Endow. 15, 11 (2022), 2761–2773.<br> <u><a href="https://dl.acm.org/doi/10.14778/3461535.3461546" target="_blank">[paper]</a></u></li>
-<li><strong>Zicun Cong</strong>, Xuan Luo, Jian Pei, Feida Zhu, Yong Zhang. “Data Pricing in Machine Learning Pipelines.” Knowledge and Information Systems (KAIS), 2022.<br> <u><a href="https://link.springer.com/article/10.1007/s10115-022-01679-4" target="_blank">[paper]</a></u></li>
-<li><strong>Zicun Cong</strong>, Lingyang Chu, Yu Yang, Jian Pei.”Comprehensible counterfactual explanation on Kolmogorov-Smirnov test.” Proc. VLDB Endow. 14, 9 (May 2021), 1583–1596. <br> <u><a href="https://dl.acm.org/doi/10.14778/3461535.3461546" target="_blank">[paper]</a></u></li>
-<li><strong>Zicun Cong</strong>, Lingyang Chu, Lanjun Wang, Xia Hu, and Jian Pei. “Exact and Consistent Interpretation of Piecewise Linear Models Hidden behind APIs: A Closed Form Solution.” In 2020 IEEE 36th International Conference on Data Engineering (ICDE), pp.&nbsp;613-624. IEEE, 2020.<br> <u><a href="https://ieeexplore.ieee.org/document/9101597" target="_blank">[paper]</a></u></li>
-</ul>
-</section>
-<section id="talk" class="level3">
-<h3 data-anchor-id="talk">Talk</h3>
-<ul>
-<li>Jian Pei, Feida Zhu, <strong>Zicun Cong</strong>, Xuan Luo, Huiwen Liu, Xin Mu.. “Data Pricing and Data Asset Governance in the AI Era.” In Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery &amp; Data Mining (KDD ’21). Association for Computing Machinery, New York, NY, USA, 4058–4059.<br> <u><a href="https://www2.cs.sfu.ca/~jpei/KDD21Tutorial/" target="_blank">[tutorial webpage]</a></u></li>
-</ul>
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
-</section>
-</main></div>
+
+
+
+
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="code,nlp,federated learning" data-listing-date-sort="1682060400000" data-listing-file-modified-sort="1682238161215" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="25">
+<div class="thumbnail">
+<p><a href="./posts/fed_trans/index.html"> <p class="card-img-top"><img src="posts/fed_trans/federated_learning.png" alt="Example of Federated Learning"  class="thumbnail-image card-img"/></p> </a></p>
 </div>
- <!-- /main -->
+<div class="body">
+<a href="./posts/fed_trans/index.html">
+<h3 class="no-anchor listing-title">
+Federated Malicious URL Detection with Flower and Transformers
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
+code
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('nlp'); return false;">
+nlp
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('federated learning'); return false;">
+federated learning
+</div>
+</div>
+<a href="./posts/fed_trans/index.html">
+<div class="listing-description">
+Cybersecurity is becoming increasingly important in today’s digital landscape, and malicious URLs are one of the most common ways for attackers to compromise user systems.…
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/fed_trans/index.html">
+<div class="listing-date">
+Apr 21, 2023
+</div>
+<div class="listing-author">
+Zicun Cong
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -201,6 +222,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     

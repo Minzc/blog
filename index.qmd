@@ -1,14 +1,56 @@
 ---
-# title: "Minzc"
-listing:
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
-  sort-ui: false
-  filter-ui: false
-page-layout: full
-title-block-banner: true
+title: "Zicun Cong"
+image: zicun.jpg
+about: 
+  template: trestles
+  image-shape: rounded
+  image-width: 16em
+  links:
+    - icon: linkedin 
+      text: LinkedIn
+      href: https://www.linkedin.com/in/zicuncong/
+    - icon: github 
+      text: GitHub
+      href: https://github.com/Minzc
+    - icon: envelope 
+      text: Email
+      href: mailto:congzicun@gmail.com
 ---
 
+### Hi there!
 
+<p> 
+I'm a Staff Software Engineer at <a href="https://www.fortinet.com" target="_blank" style="">Fortinet</a>, in charge of developing Machine Learning models for cybersecurity threats detection and prevention. I am passionate about developing Data Mining and Machine Learning algorithms that can extract insights from very large scale log data, graphs and text corpus, such as Frequent Pattern Mining and Graph Neural Networks. Prior to Fortinet, I worked at <a href="https://www.datastory.com.cn" target="_blank" style="">Datastory</a> as a software engineer, working on analyzing social network data.
+</p>
+
+<p> I received my Ph.D. in Computing Science from Simon Fraser University in 2022, advised by Professor <a href="https://sites.google.com/view/jpei/jian-peis-homepage" target="_blank" style="">Jian Pei</a>. Prior to that, I obtained my Master degree in Computing Science from Simon Fraser University and Bachelor degree from the School of Software Engineering, Sun Yat-sen University. </p>
+
+<p>Please visit <a href="Zicun_Resume.pdf" target="_blank">here</a> for my full CV.</p>
+
+### Research Interest
+I am interested in Cloud Computing, Trustworhty Data Analytics, and Data Pricing. My current focuses include:
+
+- Interpretation on deep neural networks and statistical hypothesis
+- Fairness on graph neural networks
+- Efficient, scalable, and interpretable data pricing models
+- Computation infrastructure for ML and MLOp
+
+### Publications
+
+- **Zicun Cong**, Baoxu Shi, Shan Li, Jaewon Yang, Jian Pei, Qi He. "FairSample: Training Fair and Accurate Graph Neural Networks Efficiently." Under review
+- Jay Xu, Jian Pei, **Zicun Cong**. "Finding Multidimensional Simpson's Paradox." SIGKDD Explorations
+<br>
+<u><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4231689" target="_blank">[paper]</a></u>
+- Xuan Luo, Jian Pei, <b>Zicun Cong</b>, Cheng Xu. "On Shapley Value in Data Assemblage Under Independent Utility." Proc. VLDB Endow. 15, 11 (2022), 2761--2773.<br>
+<u><a href="https://dl.acm.org/doi/10.14778/3461535.3461546" target="_blank">[paper]</a></u> 
+- **Zicun Cong**, Xuan Luo, Jian Pei, Feida Zhu, Yong Zhang. "Data Pricing in Machine Learning Pipelines." Knowledge and Information Systems (KAIS), 2022.<br>
+<u><a href="https://link.springer.com/article/10.1007/s10115-022-01679-4" target="_blank">[paper]</a></u>
+- **Zicun Cong**, Lingyang Chu, Yu Yang, Jian Pei."Comprehensible counterfactual explanation on Kolmogorov-Smirnov test." Proc. VLDB Endow. 14, 9 (May 2021), 1583–1596.
+<br>
+<u><a href="https://dl.acm.org/doi/10.14778/3461535.3461546" target="_blank">[paper]</a></u> 
+- **Zicun Cong**, Lingyang Chu, Lanjun Wang, Xia Hu, and Jian Pei. "Exact and Consistent Interpretation of Piecewise Linear Models Hidden behind APIs: A Closed Form Solution." In 2020 IEEE 36th International Conference on Data Engineering (ICDE), pp. 613-624. IEEE, 2020.<br>
+<u><a href="https://ieeexplore.ieee.org/document/9101597" target="_blank">[paper]</a></u> 
+
+### Talk
+- Jian Pei, Feida Zhu, **Zicun Cong**, Xuan Luo, Huiwen Liu, Xin Mu.. "Data Pricing and Data Asset Governance in the AI Era." In Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery & Data Mining (KDD '21). Association for Computing Machinery, New York, NY, USA, 4058–4059.<br>
+<u><a href="https://www2.cs.sfu.ca/~jpei/KDD21Tutorial/" target="_blank">[tutorial webpage]</a></u>
