@@ -3,7 +3,7 @@ title: "Federated Malicious URL Detection with Flower and Transformers"
 author: "Zicun Cong"
 date: "2023-04-21"
 bibliography: references.bib
-categories: [code, nlp, federated learning]
+categories: [project, nlp, federated learning]
 format:
     html:
         code-overflow: scroll
