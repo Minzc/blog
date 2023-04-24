@@ -264,54 +264,75 @@ div.csl-indent {
 <h2 class="anchored" data-anchor-id="client">Client</h2>
 <p>The <code>Client</code> interface serves as the primary means of communication between the central server and clients. To reduce computation and communication cost, only a subset of clients are selected for model training during each epoch (also known as a communication round). The central server sends the parameters of the global model and the training instructions to the selected clients over the network. The selected clients then perform model training and evaluation using their local data and send the updated model parameters back to the central server.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">class</span> MalURLClient(fl.client.NumPyClient):</span>
-<span id="cb1-2"><a href="#cb1-2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, cid, net, trainloader, valloader):</span>
-<span id="cb1-3"><a href="#cb1-3"></a>        <span class="co">"""</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">        Parameters</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co">        ----------</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co">        cid: </span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co">            Client ID.</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co">        net: </span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co">            Model object.</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="co">        trainloader: </span></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="co">            Dataloader for local training dataset.</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="co">        valloader: </span></span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="co">            Dataloader for validation dataset.</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="co">        """</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a>        <span class="va">self</span>.net <span class="op">=</span> net</span>
-<span id="cb1-16"><a href="#cb1-16"></a>        <span class="va">self</span>.trainloader <span class="op">=</span> trainloader</span>
-<span id="cb1-17"><a href="#cb1-17"></a>        <span class="va">self</span>.testloader <span class="op">=</span> valloader</span>
-<span id="cb1-18"><a href="#cb1-18"></a>        <span class="va">self</span>.cid <span class="op">=</span> cid   </span>
-<span id="cb1-19"><a href="#cb1-19"></a>    <span class="co"># Other necessary functions, which will be introduced below</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, cid: <span class="bu">str</span>, </span>
+<span id="cb1-3"><a href="#cb1-3"></a>                 net: torch.nn.Module, </span>
+<span id="cb1-4"><a href="#cb1-4"></a>                 trainloader: DataLoader, </span>
+<span id="cb1-5"><a href="#cb1-5"></a>                 valloader: DataLoader,</span>
+<span id="cb1-6"><a href="#cb1-6"></a>                 epoch: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-7"><a href="#cb1-7"></a>        <span class="co">"""</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">        Initializes the class with the specified parameters.</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">        Parameters</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co">        ----------</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">        cid : str</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="co">            A string representing the ID of the class.</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co">        net : torch.nn.Module</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co">            The neural network to use in the class.</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="co">        trainloader : DataLoader</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="co">            The data loader for the training set.</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="co">        valloader : DataLoader</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="co">            The data loader for the validation set.</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="co">        epoch : int</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="co">            The number of epochs to train for.</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="co">        Returns</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a><span class="co">        -------</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="co">        None</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a><span class="co">        """</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a>        <span class="va">self</span>.net <span class="op">=</span> net</span>
+<span id="cb1-28"><a href="#cb1-28"></a>        <span class="va">self</span>.trainloader <span class="op">=</span> trainloader</span>
+<span id="cb1-29"><a href="#cb1-29"></a>        <span class="va">self</span>.valloader <span class="op">=</span> valloader</span>
+<span id="cb1-30"><a href="#cb1-30"></a>        <span class="va">self</span>.cid <span class="op">=</span> cid</span>
+<span id="cb1-31"><a href="#cb1-31"></a>        <span class="va">self</span>.epoch <span class="op">=</span> epoch  </span>
+<span id="cb1-32"><a href="#cb1-32"></a>    <span class="co"># Other necessary functions, which will be introduced below</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Implementing <code>Client</code> interface typically involves defining the following methods (although set_parameters is optional): get_parameters, set_parameters, fit, and evaluate. Here, we have the implementation details of the four functions</p>
 <p><strong>get_parameters</strong>: return the model weight as a list of NumPy ndarrays</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">def</span> get_parameters(<span class="va">self</span>, config):</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">def</span> get_parameters(<span class="va">self</span>, config: <span class="bu">dict</span>) <span class="op">-&gt;</span> List[np.ndarray]:</span>
 <span id="cb2-2"><a href="#cb2-2"></a>    <span class="co">"""</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co">    Parameters</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">    ----------</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">    config:</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">        Configuration parameters requested by the server.</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">        This can be used to tell the client which parameters</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co">        are needed along with some Scalar attributes.</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="co">    Returns</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co">    -------</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="co">    parameters: </span></span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="co">        The local model parameters as a list of NumPy ndarrays.</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="co">    """</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a>    <span class="cf">return</span> [val.cpu().numpy() <span class="cf">for</span> _, val <span class="kw">in</span> <span class="va">self</span>.net.state_dict().items()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">    Returns a list of the parameters of the neural network in the class.</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">    Parameters</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">    ----------</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">    config : dict</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">        A dictionary containing configuration parameters.</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co">    Returns</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co">    -------</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co">    List[np.ndarray]</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co">        A list of numpy arrays containing the parameters of the neural network.</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co">    """</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>    <span class="cf">return</span> [val.cpu().numpy() <span class="cf">for</span> _, val <span class="kw">in</span> <span class="va">self</span>.net.state_dict().items()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>set_parameters</strong>: update the local model weights with the parameters received from the server</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">def</span> set_parameters(<span class="va">self</span>, net, parameters):</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">def</span> set_parameters(net: nn.Module, parameters: List[torch.Tensor]) <span class="op">-&gt;</span> nn.Module:</span>
 <span id="cb3-2"><a href="#cb3-2"></a>    <span class="co">"""</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co">    Parameters</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co">    ----------</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">    net: </span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co">        The model to be trained.</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co">    parameters: </span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co">        The model paremters received from the central server.</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="co">    """</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a>    params_dict <span class="op">=</span> <span class="bu">zip</span>(net.state_dict().keys(), parameters)</span>
-<span id="cb3-11"><a href="#cb3-11"></a>    state_dict <span class="op">=</span> OrderedDict({k: torch.Tensor(v) <span class="cf">for</span> k, v <span class="kw">in</span> params_dict})</span>
-<span id="cb3-12"><a href="#cb3-12"></a>    net.load_state_dict(state_dict, strict<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-13"><a href="#cb3-13"></a>    <span class="cf">return</span> net</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co">    Sets the parameters of a PyTorch neural network module to the specified tensors.</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co">    Parameters</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co">    ----------</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co">    net: nn.Module</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co">        The neural network module to set the parameters for.</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="co">    parameters: List[torch.Tensor]</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="co">        The list of tensors to set the parameters of the neural network module to.</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="co">    Returns</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co">    -------</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="co">    nn.Module</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="co">        The neural network module with updated parameters.</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="co">    """</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>    params_dict <span class="op">=</span> <span class="bu">zip</span>(net.state_dict().keys(), parameters)</span>
+<span id="cb3-18"><a href="#cb3-18"></a>    state_dict <span class="op">=</span> OrderedDict({k: torch.Tensor(v) <span class="cf">for</span> k, v <span class="kw">in</span> params_dict})</span>
+<span id="cb3-19"><a href="#cb3-19"></a>    net.load_state_dict(state_dict, strict<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-20"><a href="#cb3-20"></a>    <span class="cf">return</span> net</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>fit</strong>: performs four operations 1. set the local model weights 2. train the local model 3. receive the updated local model weights</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">def</span> fit(<span class="va">self</span>, parameters, config):</span>
 <span id="cb4-2"><a href="#cb4-2"></a>    <span class="co">"""</span></span>
@@ -321,25 +342,26 @@ div.csl-indent {
 <span id="cb4-6"><a href="#cb4-6"></a><span class="co">        The model parameters received from the central server.</span></span>
 <span id="cb4-7"><a href="#cb4-7"></a><span class="co">    config: </span></span>
 <span id="cb4-8"><a href="#cb4-8"></a><span class="co">        Configuration parameters which allow the</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co">        server to influence training on the client. It can be used to communicate arbitrary values from the server to the client, for example, to set the number of (local) training epochs.</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">    Returns</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co">    -------</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="co">    parameters: </span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co">        The locally updated model parameters.</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="co">    num_examples:</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="co">        The number of examples used for training.</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="co">    metrics:</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="co">        A dictionary mapping arbitrary string keys to values of type</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="co">        bool, bytes, float, int, or str. It can be used to communicate</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="co">        arbitrary values back to the server.</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="co">    """</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a>    set_parameters(net, parameters)</span>
-<span id="cb4-22"><a href="#cb4-22"></a>    <span class="bu">print</span>(<span class="st">"Training Started..."</span>)</span>
-<span id="cb4-23"><a href="#cb4-23"></a>    <span class="co"># train_client function train the local model using the client' local dataset.</span></span>
-<span id="cb4-24"><a href="#cb4-24"></a>    <span class="co"># train_client function is defined in the utility file</span></span>
-<span id="cb4-25"><a href="#cb4-25"></a>    train_client(<span class="va">self</span>.net, <span class="va">self</span>.trainloader, epochs<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb4-26"><a href="#cb4-26"></a>    <span class="bu">print</span>(<span class="st">"Training Finished."</span>)</span>
-<span id="cb4-27"><a href="#cb4-27"></a>    <span class="cf">return</span> <span class="va">self</span>.get_parameters(config), <span class="bu">len</span>(<span class="va">self</span>.trainloader), {}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">        server to influence training on the client. It can be used to communicate arbitrary values from the server to the client,</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">        for example, to set the number of (local) training epochs.</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">    Returns</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">    -------</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">    parameters: </span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">        The locally updated model parameters.</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">    num_examples:</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="co">        The number of examples used for training.</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co">    metrics:</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="co">        A dictionary mapping arbitrary string keys to values of type</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co">        bool, bytes, float, int, or str. It can be used to communicate</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co">        arbitrary values back to the server.</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co">    """</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>    set_parameters(<span class="va">self</span>.net, parameters)</span>
+<span id="cb4-23"><a href="#cb4-23"></a>    <span class="bu">print</span>(<span class="st">"Training Started..."</span>)</span>
+<span id="cb4-24"><a href="#cb4-24"></a>    <span class="co"># train_client function train the local model using the client' local dataset.</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>    <span class="co"># train_client function is defined in the utility file</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a>    train(<span class="va">self</span>.net, <span class="va">self</span>.trainloader, epochs<span class="op">=</span><span class="va">self</span>.epoch)</span>
+<span id="cb4-27"><a href="#cb4-27"></a>    <span class="bu">print</span>(<span class="st">"Training Finished."</span>)</span>
+<span id="cb4-28"><a href="#cb4-28"></a>    <span class="cf">return</span> <span class="va">self</span>.get_parameters(config), <span class="bu">len</span>(<span class="va">self</span>.trainloader), {}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>evaluate</strong>: evaluate the global model on the client’s local dataset</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">def</span> evaluate(<span class="va">self</span>, parameters, config):</span>
 <span id="cb5-2"><a href="#cb5-2"></a>    <span class="co">"""</span></span>
@@ -361,7 +383,7 @@ div.csl-indent {
 <span id="cb5-18"><a href="#cb5-18"></a><span class="co">        type bool, bytes, float, int, or str. It can be used to</span></span>
 <span id="cb5-19"><a href="#cb5-19"></a><span class="co">        communicate arbitrary values back to the server.</span></span>
 <span id="cb5-20"><a href="#cb5-20"></a><span class="co">    """</span></span>
-<span id="cb5-21"><a href="#cb5-21"></a>    <span class="va">self</span>.net <span class="op">=</span> set_parameters(net, parameters)</span>
+<span id="cb5-21"><a href="#cb5-21"></a>    <span class="va">self</span>.net <span class="op">=</span> set_parameters(<span class="va">self</span>.net, parameters)</span>
 <span id="cb5-22"><a href="#cb5-22"></a>    <span class="co"># test function is defined in the utility file.</span></span>
 <span id="cb5-23"><a href="#cb5-23"></a>    valid_loss, valid_accuracy, valid_f1 <span class="op">=</span> test(<span class="va">self</span>.net, <span class="va">self</span>.valloader)</span>
 <span id="cb5-24"><a href="#cb5-24"></a>    metrics <span class="op">=</span> {</span>
@@ -369,10 +391,12 @@ div.csl-indent {
 <span id="cb5-26"><a href="#cb5-26"></a>        <span class="st">"valid_loss"</span>: <span class="bu">float</span>(valid_loss),</span>
 <span id="cb5-27"><a href="#cb5-27"></a>        <span class="st">'valid_f1'</span>: <span class="bu">float</span>(valid_f1),</span>
 <span id="cb5-28"><a href="#cb5-28"></a>    }</span>
-<span id="cb5-29"><a href="#cb5-29"></a>    <span class="cf">return</span> <span class="bu">float</span>(valid_loss), <span class="bu">len</span>(<span class="va">self</span>.testloader), rsmetricst</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Next, let’s create an instance of our client class, and run it using the following line:</p>
-<p><code>fl.client.start_numpy_client(server_address="[::]:8080", client=CifarClient())</code></p>
-<p>The string <code>[::]:8080</code> specifies which server the client should connect to. The string <code>[::]</code> means that the server and client are running on the same machine. If we were to run a truly federated learning with the server and clients on different machines, we would need to update the server_address to point the client to the correct server.</p>
+<span id="cb5-29"><a href="#cb5-29"></a>    <span class="cf">return</span> <span class="bu">float</span>(valid_loss), <span class="bu">len</span>(<span class="va">self</span>.valloader), metrics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!-- Next, let's create an instance of our client class, and run it using the following line:
+
+`fl.client.start_numpy_client(server_address="[::]:8080", client=CifarClient())`
+
+The string `[::]:8080` specifies which server the client should connect to. The string `[::]` means that the server and client are running on the same machine. If we were to run a truly federated learning with the server and clients on different machines, we would need to update the server_address to point the client to the correct server. -->
 </section>
 <section id="server" class="level2">
 <h2 class="anchored" data-anchor-id="server">Server</h2>
@@ -384,36 +408,44 @@ div.csl-indent {
 <p>We can mitigate the issue by selecting all clients for evaluation for stable evaluation, however, this results in large communication and computation cost, especially there are hundreds of or thousands of clients participating in the federated learning.</p>
 <p>Next, let’s implement our server using the FedAvg strategy provided by <code>Flower</code>.</p>
 <p><strong>evaluate</strong>: the centralized evaluation function, which will be called by the server after every epoch of federated learning.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">def</span> get_evaluate_fn(net, testloader):</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">def</span> get_evaluate_fn(net: torch.nn.Module, testloader: DataLoader) <span class="op">-&gt;</span> Callable[[<span class="bu">int</span>, Any, <span class="bu">dict</span>], Tuple[<span class="bu">float</span>, <span class="bu">dict</span>]]:</span>
 <span id="cb6-2"><a href="#cb6-2"></a>    <span class="co">"""</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="co">    Return an evaluation function for centralized evaluation.</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">    Parameters</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">    ----------</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">    net:</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">        Model to be evaluated.</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">    testloader:</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">        Dataset loader.</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">    """</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>    <span class="kw">def</span> evaluate(server_round, parameters, config):</span>
-<span id="cb6-12"><a href="#cb6-12"></a>        <span class="co">"""</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">        Parameters</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">        ----------</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">        server_round:</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">            The current epoch of federated learning.</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a><span class="co">        parameters:</span></span>
-<span id="cb6-18"><a href="#cb6-18"></a><span class="co">            The current (global) model parameters.</span></span>
-<span id="cb6-19"><a href="#cb6-19"></a><span class="co">        config : </span></span>
-<span id="cb6-20"><a href="#cb6-20"></a><span class="co">            Same as the config in fit.</span></span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="co">        Returns</span></span>
-<span id="cb6-22"><a href="#cb6-22"></a><span class="co">        -------</span></span>
-<span id="cb6-23"><a href="#cb6-23"></a><span class="co">        loss : float</span></span>
-<span id="cb6-24"><a href="#cb6-24"></a><span class="co">            The evaluation loss of the model on the local dataset.</span></span>
-<span id="cb6-25"><a href="#cb6-25"></a><span class="co">        """</span></span>
-<span id="cb6-26"><a href="#cb6-26"></a>        set_parameters(net, parameters)  <span class="co"># 'net' is the global model .Update model with the latest parameters</span></span>
-<span id="cb6-27"><a href="#cb6-27"></a>        loss, accuracy, f1 <span class="op">=</span> test(net, testloader)</span>
-<span id="cb6-28"><a href="#cb6-28"></a>        <span class="cf">return</span> loss, {<span class="st">"accuracy"</span>: accuracy, <span class="st">'f1'</span>: f1}</span>
-<span id="cb6-29"><a href="#cb6-29"></a></span>
-<span id="cb6-30"><a href="#cb6-30"></a>    <span class="cf">return</span> evaluate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">    Parameters</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">    ----------</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">    net : torch.nn.Module</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">        The model to be evaluated.</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">    testloader : DataLoader</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">        The dataset loader.</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co">    Returns</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co">    -------</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">    Callable[[int, Any, dict], Tuple[float, dict]]</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">        A function that evaluates the model on the given test data and returns the evaluation loss and metrics.</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co">    """</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>    <span class="kw">def</span> evaluate(server_round: <span class="bu">int</span>, parameters: Any, config: <span class="bu">dict</span>) <span class="op">-&gt;</span> Tuple[<span class="bu">float</span>, <span class="bu">dict</span>]:</span>
+<span id="cb6-17"><a href="#cb6-17"></a>        <span class="co">"""</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="co">        Evaluate the model on the given test data and return the evaluation loss and metrics.</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a></span>
+<span id="cb6-20"><a href="#cb6-20"></a><span class="co">        Parameters</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a><span class="co">        ----------</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a><span class="co">        server_round : int</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a><span class="co">            The current epoch of federated learning.</span></span>
+<span id="cb6-24"><a href="#cb6-24"></a><span class="co">        parameters : Any</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a><span class="co">            The current (global) model parameters.</span></span>
+<span id="cb6-26"><a href="#cb6-26"></a><span class="co">        config : dict</span></span>
+<span id="cb6-27"><a href="#cb6-27"></a><span class="co">            Same as the config in fit.</span></span>
+<span id="cb6-28"><a href="#cb6-28"></a></span>
+<span id="cb6-29"><a href="#cb6-29"></a><span class="co">        Returns</span></span>
+<span id="cb6-30"><a href="#cb6-30"></a><span class="co">        -------</span></span>
+<span id="cb6-31"><a href="#cb6-31"></a><span class="co">        Tuple[float, dict]</span></span>
+<span id="cb6-32"><a href="#cb6-32"></a><span class="co">            A tuple containing the evaluation loss and a dictionary of evaluation metrics.</span></span>
+<span id="cb6-33"><a href="#cb6-33"></a><span class="co">        """</span></span>
+<span id="cb6-34"><a href="#cb6-34"></a>        set_parameters(net, parameters)  <span class="co"># 'net' is the global model. Update model with the latest parameters</span></span>
+<span id="cb6-35"><a href="#cb6-35"></a>        loss, accuracy, f1 <span class="op">=</span> test(net, testloader)</span>
+<span id="cb6-36"><a href="#cb6-36"></a>        <span class="cf">return</span> loss, {<span class="st">"accuracy"</span>: accuracy, <span class="st">'f1'</span>: f1}</span>
+<span id="cb6-37"><a href="#cb6-37"></a></span>
+<span id="cb6-38"><a href="#cb6-38"></a>    <span class="cf">return</span> evaluate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>weighted_average</strong>: metric aggregation used by federated evaluation.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">def</span> weighted_average(metrics: List[Tuple[<span class="bu">int</span>, Metrics]]) <span class="op">-&gt;</span> Metrics:</span>
 <span id="cb7-2"><a href="#cb7-2"></a>    <span class="co">"""</span></span>
@@ -422,7 +454,7 @@ div.csl-indent {
 <span id="cb7-5"><a href="#cb7-5"></a></span>
 <span id="cb7-6"><a href="#cb7-6"></a><span class="co">    Parameters</span></span>
 <span id="cb7-7"><a href="#cb7-7"></a><span class="co">    ----------</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co">    metrics:</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">    metrics: List[Tuple[int, Metrics]]</span></span>
 <span id="cb7-9"><a href="#cb7-9"></a><span class="co">        The list of local evaluation metrics sent by clients.</span></span>
 <span id="cb7-10"><a href="#cb7-10"></a><span class="co">        metrics[idx] is the evaluation sent by the `idx` evaluation client.</span></span>
 <span id="cb7-11"><a href="#cb7-11"></a><span class="co">        metrics[idx][0] is the number of records of the corresponding client.</span></span>
@@ -430,7 +462,7 @@ div.csl-indent {
 <span id="cb7-13"><a href="#cb7-13"></a></span>
 <span id="cb7-14"><a href="#cb7-14"></a><span class="co">    Returns</span></span>
 <span id="cb7-15"><a href="#cb7-15"></a><span class="co">    -------</span></span>
-<span id="cb7-16"><a href="#cb7-16"></a><span class="co">    weight_metrics :</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="co">    weight_metrics: Metrics</span></span>
 <span id="cb7-17"><a href="#cb7-17"></a><span class="co">        The weighted average of the federated evaluation.</span></span>
 <span id="cb7-18"><a href="#cb7-18"></a><span class="co">    """</span></span>
 <span id="cb7-19"><a href="#cb7-19"></a>    weight_metrics <span class="op">=</span> {}</span>
@@ -455,80 +487,97 @@ div.csl-indent {
 <p>The distributions of the local datasets held by clients can have a significant impact on the performance of the collaboratively trained model in federated learning. This is because federated learning relies on stochastic gradient descent (SGD), and the independent and identically distributed (IID) sampling of the training data is important to ensure that the stochastic gradient is an unbiased estimate of the full gradient <span class="citation" data-cites="zhao2018federated">(<a href="#ref-zhao2018federated" role="doc-biblioref">Zhao et al. 2018</a>)</span>.</p>
 <p>To investigate the impact of local data distribution on the performance of the global model, we conducted experiments using two different methods to generate clients’ local data, that is, IID data generation and non-IID data generation.</p>
 <p><strong>prepare_train_test_even</strong>: partition the dataset into the local training data of clients, and a server side testing data.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">def</span> _train_test_split(loca_data):</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">def</span> _train_test_split(local_data: Dataset) <span class="op">-&gt;</span> DatasetDict:</span>
 <span id="cb9-2"><a href="#cb9-2"></a>    <span class="co">"""</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="co">    Split the given dataset to training and testing datasets</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="co">    Parameters</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="co">    ----------</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="co">    loca_data:</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="co">        The local dataset of a client, which will be split into training and validation datasets.</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a></span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="co">    Returns</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co">    -------</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="co">    data_dict:</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a><span class="co">        The training and validation datasets of a client</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a><span class="co">    """</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a>    train_val_client_split <span class="op">=</span> loca_data.train_test_split(test_size<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>)  <span class="co"># 80% local training data, 20% local validation data</span></span>
-<span id="cb9-15"><a href="#cb9-15"></a>    data_dict <span class="op">=</span> DatasetDict({</span>
-<span id="cb9-16"><a href="#cb9-16"></a>                <span class="st">'train'</span>: train_val_client_split[<span class="st">'train'</span>],</span>
-<span id="cb9-17"><a href="#cb9-17"></a>                <span class="st">'validation'</span>: train_val_client_split[<span class="st">'test'</span>],</span>
-<span id="cb9-18"><a href="#cb9-18"></a>                })</span>
-<span id="cb9-19"><a href="#cb9-19"></a>    <span class="cf">return</span> data_dict</span>
-<span id="cb9-20"><a href="#cb9-20"></a></span>
-<span id="cb9-21"><a href="#cb9-21"></a><span class="kw">def</span> prepare_train_test_iid(raw_datasets):</span>
-<span id="cb9-22"><a href="#cb9-22"></a>    <span class="co">"""</span></span>
-<span id="cb9-23"><a href="#cb9-23"></a><span class="co">    Generate IID datasets for clients.</span></span>
-<span id="cb9-24"><a href="#cb9-24"></a></span>
-<span id="cb9-25"><a href="#cb9-25"></a><span class="co">    Parameters</span></span>
-<span id="cb9-26"><a href="#cb9-26"></a><span class="co">    ----------</span></span>
-<span id="cb9-27"><a href="#cb9-27"></a><span class="co">    raw_datasets:</span></span>
-<span id="cb9-28"><a href="#cb9-28"></a><span class="co">        The entire dataset will be split into local datases for each client.</span></span>
-<span id="cb9-29"><a href="#cb9-29"></a><span class="co">    </span></span>
-<span id="cb9-30"><a href="#cb9-30"></a><span class="co">    Returns</span></span>
-<span id="cb9-31"><a href="#cb9-31"></a><span class="co">    -------</span></span>
-<span id="cb9-32"><a href="#cb9-32"></a><span class="co">    client_datasets:</span></span>
-<span id="cb9-33"><a href="#cb9-33"></a><span class="co">        The list of client local datasets will consist of DataDict objects, with each object containing the training and validation datasets for a single client. </span></span>
-<span id="cb9-34"><a href="#cb9-34"></a><span class="co">    server_test_dataset:</span></span>
-<span id="cb9-35"><a href="#cb9-35"></a><span class="co">        The dataset used by the central server for central evaluation.</span></span>
-<span id="cb9-36"><a href="#cb9-36"></a><span class="co">    """</span></span>
-<span id="cb9-37"><a href="#cb9-37"></a>    train_test_split <span class="op">=</span> raw_datasets.train_test_split(test_size<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb9-38"><a href="#cb9-38"></a>    client_dataset <span class="op">=</span> train_test_split[<span class="st">'train'</span>]</span>
-<span id="cb9-39"><a href="#cb9-39"></a>    server_test_dataset <span class="op">=</span> train_test_split[<span class="st">'test'</span>]</span>
-<span id="cb9-40"><a href="#cb9-40"></a>    partition_size <span class="op">=</span> <span class="bu">len</span>(global_train_dataset) <span class="op">//</span> NUM_CLIENTS <span class="co"># `NUM_CLIENTS` is the total number of clients in the federated learning process. `partition_size` is the number of records in each client's local data.</span></span>
-<span id="cb9-41"><a href="#cb9-41"></a></span>
-<span id="cb9-42"><a href="#cb9-42"></a>    client_datasets <span class="op">=</span> []</span>
-<span id="cb9-43"><a href="#cb9-43"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(NUM_CLIENTS):</span>
-<span id="cb9-44"><a href="#cb9-44"></a>        client_split <span class="op">=</span> client_dataset.train_test_split(train_size<span class="op">=</span>partition_size)</span>
-<span id="cb9-45"><a href="#cb9-45"></a>        client_dataset <span class="op">=</span> client_split[<span class="st">'test'</span>] <span class="co"># The remaining data will be divided among the other clients.</span></span>
-<span id="cb9-46"><a href="#cb9-46"></a>        client_datasets.append(_train_test_split(client_split[<span class="st">'train'</span>]))</span>
-<span id="cb9-47"><a href="#cb9-47"></a>    <span class="cf">return</span> client_datasets, server_test_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">    This function splits a given local dataset of a client into training and validation datasets.</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">    Parameters</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co">    ----------</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co">    loca_data (Dataset): </span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">        The local dataset of a client to be split.</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">    Returns</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">    -------</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">    data_dict (DatasetDict): </span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">        The training and validation datasets of the client.</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="co">    """</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a>    train_val_client_split <span class="op">=</span> local_data.train_test_split(test_size<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span>RANDOM_SEEDS)  <span class="co"># 80% local training data, 20% local validation data</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a>    data_dict <span class="op">=</span> DatasetDict({</span>
+<span id="cb9-17"><a href="#cb9-17"></a>                <span class="st">'train'</span>: train_val_client_split[<span class="st">'train'</span>],</span>
+<span id="cb9-18"><a href="#cb9-18"></a>                <span class="st">'validation'</span>: train_val_client_split[<span class="st">'test'</span>],</span>
+<span id="cb9-19"><a href="#cb9-19"></a>                })</span>
+<span id="cb9-20"><a href="#cb9-20"></a>    <span class="cf">return</span> data_dict</span>
+<span id="cb9-21"><a href="#cb9-21"></a></span>
+<span id="cb9-22"><a href="#cb9-22"></a></span>
+<span id="cb9-23"><a href="#cb9-23"></a><span class="kw">def</span> prepare_train_test_iid(raw_datasets: Dataset,  num_clients: <span class="bu">int</span>) <span class="op">-&gt;</span> Tuple[List[DatasetDict], Dataset]:</span>
+<span id="cb9-24"><a href="#cb9-24"></a>    <span class="co">"""</span></span>
+<span id="cb9-25"><a href="#cb9-25"></a><span class="co">    Prepares the training and testing datasets for a federated learning scenario where the data is partitioned across </span></span>
+<span id="cb9-26"><a href="#cb9-26"></a><span class="co">    multiple clients in an IID (Independent and Identically Distributed) manner.</span></span>
+<span id="cb9-27"><a href="#cb9-27"></a></span>
+<span id="cb9-28"><a href="#cb9-28"></a><span class="co">    Parameters</span></span>
+<span id="cb9-29"><a href="#cb9-29"></a><span class="co">    ----------</span></span>
+<span id="cb9-30"><a href="#cb9-30"></a><span class="co">    raw_datasets: Dataset</span></span>
+<span id="cb9-31"><a href="#cb9-31"></a><span class="co">        The raw dataset containing the URLs and their corresponding labels.</span></span>
+<span id="cb9-32"><a href="#cb9-32"></a></span>
+<span id="cb9-33"><a href="#cb9-33"></a><span class="co">    Returns</span></span>
+<span id="cb9-34"><a href="#cb9-34"></a><span class="co">    -------</span></span>
+<span id="cb9-35"><a href="#cb9-35"></a><span class="co">    client_datasets: List[DatasetDict]</span></span>
+<span id="cb9-36"><a href="#cb9-36"></a><span class="co">        A list of datasets for each client, each containing the training and validation subsets.</span></span>
+<span id="cb9-37"><a href="#cb9-37"></a><span class="co">    server_test_dataset: Dataset</span></span>
+<span id="cb9-38"><a href="#cb9-38"></a><span class="co">        The dataset used by the central server for central evaluation.</span></span>
+<span id="cb9-39"><a href="#cb9-39"></a><span class="co">    """</span></span>
+<span id="cb9-40"><a href="#cb9-40"></a>    train_test_split <span class="op">=</span> raw_datasets.train_test_split(test_size<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb9-41"><a href="#cb9-41"></a>    client_dataset <span class="op">=</span> train_test_split[<span class="st">'train'</span>]</span>
+<span id="cb9-42"><a href="#cb9-42"></a>    server_test_dataset <span class="op">=</span> train_test_split[<span class="st">'test'</span>]</span>
+<span id="cb9-43"><a href="#cb9-43"></a>    partition_size <span class="op">=</span> <span class="bu">len</span>(client_dataset) <span class="op">//</span> num_clients <span class="co"># `num_clients` is the total number of clients in the federated learning process. `partition_size` is the number of records in each client's local data.</span></span>
+<span id="cb9-44"><a href="#cb9-44"></a></span>
+<span id="cb9-45"><a href="#cb9-45"></a>    client_datasets <span class="op">=</span> []</span>
+<span id="cb9-46"><a href="#cb9-46"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_clients):</span>
+<span id="cb9-47"><a href="#cb9-47"></a>        client_split <span class="op">=</span> client_dataset.train_test_split(train_size<span class="op">=</span>partition_size)</span>
+<span id="cb9-48"><a href="#cb9-48"></a>        client_dataset <span class="op">=</span> client_split[<span class="st">'test'</span>] <span class="co"># The remaining data will be divided among the other clients.</span></span>
+<span id="cb9-49"><a href="#cb9-49"></a>        client_datasets.append(_train_test_split(client_split[<span class="st">'train'</span>]))</span>
+<span id="cb9-50"><a href="#cb9-50"></a>    <span class="cf">return</span> client_datasets, server_test_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>prepare_train_test_noniid</strong>: generate label-based non-IID distributed local datasets for clients. Assume we are working on a multi-class classification problem. A client is only assigned records from two specified categories in the dataset. For example, consider that we are working on a malicious URLs detection problem, where there are four categories, namely, benign, malicious, phishing, and defacement URLs. The first client will only have records from benign and phishing categories, the second client will only have records from benign and malicous categories, and the third client will only have records from benign and defacement categories.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">def</span> prepare_train_test_noniid(raw_datasets):</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">def</span> prepare_train_test_noniid(raw_datasets: Dataset, num_clients: <span class="bu">int</span>) <span class="op">-&gt;</span> Tuple[List[DatasetDict], Dataset]:</span>
 <span id="cb10-2"><a href="#cb10-2"></a>    <span class="co">"""</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="co">    Generate non-IID datasets for clients.</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="co">    Parameters and returns are the same as those `prepare_train_test_iid`</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a><span class="co">    """</span></span>
-<span id="cb10-7"><a href="#cb10-7"></a>    train_test_split <span class="op">=</span> raw_datasets.train_test_split(test_size<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb10-8"><a href="#cb10-8"></a>    clients_dataset, server_test_dataset <span class="op">=</span> train_test_split[<span class="st">'train'</span>], train_test_split[<span class="st">'test'</span>]</span>
-<span id="cb10-9"><a href="#cb10-9"></a>    <span class="co"># label_id 0: benign</span></span>
-<span id="cb10-10"><a href="#cb10-10"></a>    <span class="co"># label_id 1: malicious</span></span>
-<span id="cb10-11"><a href="#cb10-11"></a>    <span class="co"># label_id 2: phishing</span></span>
-<span id="cb10-12"><a href="#cb10-12"></a>    <span class="co"># label_id 3: defacement</span></span>
-<span id="cb10-13"><a href="#cb10-13"></a>    whole_benign <span class="op">=</span> clients_dataset.<span class="bu">filter</span>(<span class="kw">lambda</span> x: x[<span class="st">'labels'</span>] <span class="op">==</span> <span class="dv">0</span>)</span>
-<span id="cb10-14"><a href="#cb10-14"></a>    benign_size_per_client <span class="op">=</span> <span class="bu">len</span>(whole_bening) <span class="op">//</span> NUM_CLIENTS</span>
-<span id="cb10-15"><a href="#cb10-15"></a></span>
-<span id="cb10-16"><a href="#cb10-16"></a>    client_datasets <span class="op">=</span> []</span>
-<span id="cb10-17"><a href="#cb10-17"></a>    <span class="co"># Class 0 is benign</span></span>
-<span id="cb10-18"><a href="#cb10-18"></a>    <span class="cf">for</span> cid <span class="kw">in</span> <span class="bu">range</span>(NUM_CLIENTS):</span>
-<span id="cb10-19"><a href="#cb10-19"></a>        abnormal_urls <span class="op">=</span> clients_dataset.<span class="bu">filter</span>(<span class="kw">lambda</span> x: x[<span class="st">'labels'</span>] <span class="op">==</span> (cid <span class="op">+</span> <span class="dv">1</span>)) </span>
-<span id="cb10-20"><a href="#cb10-20"></a>        client_split <span class="op">=</span> whole_benign.train_test_split(train_size<span class="op">=</span>benign_size_per_client, seed<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb10-21"><a href="#cb10-21"></a>        local_benign, whole_benign <span class="op">=</span> client_split[<span class="st">'train'</span>], client_split[<span class="st">'test'</span>]</span>
-<span id="cb10-22"><a href="#cb10-22"></a></span>
-<span id="cb10-23"><a href="#cb10-23"></a>        local_dataset <span class="op">=</span> concatenate_datasets([local_benign, abnormal_urls])</span>
-<span id="cb10-24"><a href="#cb10-24"></a>        client_datasets.append(_train_test_split(local_dataset))</span>
-<span id="cb10-25"><a href="#cb10-25"></a></span>
-<span id="cb10-26"><a href="#cb10-26"></a>    <span class="cf">return</span> client_datasets, server_test_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">    Prepares the training and testing datasets for a federated learning scenario where the data is partitioned across </span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">    multiple clients in a non-IID (Non-Independent and Identically Distributed) manner.</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">    Parameters</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">    ----------</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">    raw_datasets: Dataset</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">        The raw dataset containing the URLs and their corresponding labels.</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">    num_clients: int</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">        The total number of clients in the federated learning process.</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="co">    Returns</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co">    -------</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="co">    client_datasets: List[DatasetDict]</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="co">        A list of datasets for each client, each containing the training and validation subsets.</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="co">    server_test_dataset: Dataset</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="co">        The dataset used by the central server for central evaluation.</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a><span class="co">    """</span></span>
+<span id="cb10-20"><a href="#cb10-20"></a></span>
+<span id="cb10-21"><a href="#cb10-21"></a>    train_test_split <span class="op">=</span> raw_datasets.train_test_split(test_size<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb10-22"><a href="#cb10-22"></a>    clients_dataset, server_test_dataset <span class="op">=</span> train_test_split[<span class="st">'train'</span>], train_test_split[<span class="st">'test'</span>]</span>
+<span id="cb10-23"><a href="#cb10-23"></a>    <span class="co"># label_id 0: benign</span></span>
+<span id="cb10-24"><a href="#cb10-24"></a>    <span class="co"># label_id 1: malicious</span></span>
+<span id="cb10-25"><a href="#cb10-25"></a>    <span class="co"># label_id 2: phishing</span></span>
+<span id="cb10-26"><a href="#cb10-26"></a>    <span class="co"># label_id 3: defacement</span></span>
+<span id="cb10-27"><a href="#cb10-27"></a>    whole_benign <span class="op">=</span> clients_dataset.<span class="bu">filter</span>(<span class="kw">lambda</span> x: x[<span class="st">'labels'</span>] <span class="op">==</span> <span class="dv">0</span>)</span>
+<span id="cb10-28"><a href="#cb10-28"></a>    benign_size_per_client <span class="op">=</span> <span class="bu">len</span>(whole_benign) <span class="op">//</span> num_clients</span>
+<span id="cb10-29"><a href="#cb10-29"></a></span>
+<span id="cb10-30"><a href="#cb10-30"></a>    client_datasets <span class="op">=</span> []</span>
+<span id="cb10-31"><a href="#cb10-31"></a>    <span class="co"># Class 0 is benign</span></span>
+<span id="cb10-32"><a href="#cb10-32"></a>    <span class="cf">for</span> cid <span class="kw">in</span> <span class="bu">range</span>(num_clients):</span>
+<span id="cb10-33"><a href="#cb10-33"></a>        abnormal_urls <span class="op">=</span> clients_dataset.<span class="bu">filter</span>(<span class="kw">lambda</span> x: x[<span class="st">'labels'</span>] <span class="op">==</span> (cid <span class="op">+</span> <span class="dv">1</span>)) </span>
+<span id="cb10-34"><a href="#cb10-34"></a>        client_split <span class="op">=</span> whole_benign.train_test_split(train_size<span class="op">=</span>benign_size_per_client, seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb10-35"><a href="#cb10-35"></a>        local_benign, whole_benign <span class="op">=</span> client_split[<span class="st">'train'</span>], client_split[<span class="st">'test'</span>]</span>
+<span id="cb10-36"><a href="#cb10-36"></a></span>
+<span id="cb10-37"><a href="#cb10-37"></a>        local_dataset <span class="op">=</span> concatenate_datasets([local_benign, abnormal_urls])</span>
+<span id="cb10-38"><a href="#cb10-38"></a>        client_datasets.append(_train_test_split(local_dataset))</span>
+<span id="cb10-39"><a href="#cb10-39"></a></span>
+<span id="cb10-40"><a href="#cb10-40"></a>    <span class="cf">return</span> client_datasets, server_test_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For this project, we constructed our classifier using the pre-trained BERT model. To prepare the input data for the model, we used the tokenize function of BERT to tokenize each URL into a sequence of tokens compatible with the BERT model. We iterate the datasets generated from the above functions, and tokenize the datasets. The <code>tokenizer</code> is also provided by the HuggingFace Transformers library. In particular, <code>tokenizer = AutoTokenizer.from_pretrained(CHECKPOINT)</code></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">def</span> tokenize_function(record):</span>
 <span id="cb11-2"><a href="#cb11-2"></a>    <span class="cf">return</span> tokenizer(record[<span class="st">"url"</span>], truncation<span class="op">=</span><span class="va">True</span>, padding<span class="op">=</span><span class="va">True</span>)</span>
@@ -551,62 +600,71 @@ div.csl-indent {
 <span id="cb11-19"><a href="#cb11-19"></a>    <span class="co"># Wrap test and validation dataset as DataLoader, ....</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>After prepraing our datasets, next step is to define our model. For this project, we build our classifier based on the pre-trained BERT model, which can be easily implemented using the API provided by HuggingFace Transformers.</p>
 <p>The created model instance <code>net</code> consists of a pre-trained distilled BERT model and a linear layer for sequence label prediction.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">def</span> init_model(num_labels, fine_tune<span class="op">=</span><span class="va">True</span>):</span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">def</span> init_model(num_labels: <span class="bu">int</span>, fine_tune: <span class="bu">bool</span> <span class="op">=</span> <span class="va">True</span>) <span class="op">-&gt;</span> torch.nn.Module:</span>
 <span id="cb12-2"><a href="#cb12-2"></a>    <span class="co">"""</span></span>
 <span id="cb12-3"><a href="#cb12-3"></a><span class="co">    Initialize a BERT based sequence classifier.</span></span>
 <span id="cb12-4"><a href="#cb12-4"></a></span>
 <span id="cb12-5"><a href="#cb12-5"></a><span class="co">    Parameters</span></span>
 <span id="cb12-6"><a href="#cb12-6"></a><span class="co">    ----------</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a><span class="co">    fine_tune:</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a><span class="co">        If we want to fine tune the parameters of the pre-trained BERT model.</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a><span class="co">    """</span></span>
-<span id="cb12-10"><a href="#cb12-10"></a>    CHECKPOINT <span class="op">=</span> <span class="st">"distilbert-base-uncased"</span> <span class="co"># Model name</span></span>
-<span id="cb12-11"><a href="#cb12-11"></a>    net <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(CHECKPOINT, num_labels<span class="op">=</span>num_labels).to(DEVICE)</span>
-<span id="cb12-12"><a href="#cb12-12"></a></span>
-<span id="cb12-13"><a href="#cb12-13"></a>    <span class="cf">if</span> fine_tune <span class="op">==</span> <span class="va">False</span>:</span>
-<span id="cb12-14"><a href="#cb12-14"></a>        <span class="cf">for</span> name, param <span class="kw">in</span> net.named_parameters():</span>
-<span id="cb12-15"><a href="#cb12-15"></a>            <span class="cf">if</span> name.startswith(<span class="st">"bert"</span>): <span class="co"># choose whatever you like here</span></span>
-<span id="cb12-16"><a href="#cb12-16"></a>                param.requires_grad <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb12-17"><a href="#cb12-17"></a></span>
-<span id="cb12-18"><a href="#cb12-18"></a>    net.train()</span>
-<span id="cb12-19"><a href="#cb12-19"></a>    <span class="cf">return</span> net</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="co">    num_labels:</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="co">        The number of classes the model should predict.</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="co">    fine_tune:</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="co">        If we want to fine tune the parameters of the pre-trained BERT model.</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="co">    Returns</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="co">    -------</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="co">    net:</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="co">        A BERT-based sequence classifier model with the specified number of labels. </span></span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="co">    """</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a>    net <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(CHECKPOINT, num_labels<span class="op">=</span>num_labels).to(DEVICE)</span>
+<span id="cb12-18"><a href="#cb12-18"></a></span>
+<span id="cb12-19"><a href="#cb12-19"></a>    <span class="cf">if</span> fine_tune <span class="op">==</span> <span class="va">False</span>:</span>
+<span id="cb12-20"><a href="#cb12-20"></a>        <span class="cf">for</span> name, param <span class="kw">in</span> net.named_parameters():</span>
+<span id="cb12-21"><a href="#cb12-21"></a>            <span class="cf">if</span> name.startswith(<span class="st">"bert"</span>): <span class="co"># choose whatever you like here</span></span>
+<span id="cb12-22"><a href="#cb12-22"></a>                param.requires_grad <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb12-23"><a href="#cb12-23"></a></span>
+<span id="cb12-24"><a href="#cb12-24"></a>    net.train()</span>
+<span id="cb12-25"><a href="#cb12-25"></a>    <span class="cf">return</span> net</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We are almost done with our implementation. The final step is to implement the training function to train our model.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">def</span> train(net, trainloader, epochs, testloader):</span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">def</span> train(net: nn.Module, trainloader: DataLoader, epochs: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
 <span id="cb13-2"><a href="#cb13-2"></a>    <span class="co">"""</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="co">    The training function is used by clients to train their local model during the federated learning process.</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="co">    Train the given neural network for the specified number of epochs using the given data loader.</span></span>
 <span id="cb13-4"><a href="#cb13-4"></a></span>
 <span id="cb13-5"><a href="#cb13-5"></a><span class="co">    Parameters</span></span>
 <span id="cb13-6"><a href="#cb13-6"></a><span class="co">    ----------</span></span>
-<span id="cb13-7"><a href="#cb13-7"></a><span class="co">    net:</span></span>
-<span id="cb13-8"><a href="#cb13-8"></a><span class="co">        The local model to be trained.</span></span>
-<span id="cb13-9"><a href="#cb13-9"></a><span class="co">    trainloader:</span></span>
-<span id="cb13-10"><a href="#cb13-10"></a><span class="co">        The DataLoader of training data.</span></span>
-<span id="cb13-11"><a href="#cb13-11"></a><span class="co">    epochs:</span></span>
-<span id="cb13-12"><a href="#cb13-12"></a><span class="co">        The number of epochs for client training during the federated learning process.</span></span>
-<span id="cb13-13"><a href="#cb13-13"></a><span class="co">    testloader:</span></span>
-<span id="cb13-14"><a href="#cb13-14"></a><span class="co">        The DataLoader of test data.</span></span>
-<span id="cb13-15"><a href="#cb13-15"></a><span class="co">    """</span></span>
-<span id="cb13-16"><a href="#cb13-16"></a>    optimizer <span class="op">=</span> AdamW(net.parameters(), lr<span class="op">=</span><span class="fl">5e-5</span>)</span>
-<span id="cb13-17"><a href="#cb13-17"></a></span>
-<span id="cb13-18"><a href="#cb13-18"></a>    <span class="cf">for</span> _ <span class="kw">in</span> tqdm.tqdm(<span class="bu">range</span>(epochs), desc<span class="op">=</span><span class="st">'epoch'</span>):</span>
-<span id="cb13-19"><a href="#cb13-19"></a>      net.train()</span>
-<span id="cb13-20"><a href="#cb13-20"></a>      <span class="cf">for</span> batch <span class="kw">in</span> tqdm.tqdm(trainloader, desc<span class="op">=</span><span class="st">'iterate data'</span>):</span>
-<span id="cb13-21"><a href="#cb13-21"></a>          batch <span class="op">=</span> {k: v.to(DEVICE) <span class="cf">for</span> k, v <span class="kw">in</span> batch.items()}</span>
-<span id="cb13-22"><a href="#cb13-22"></a>          outputs <span class="op">=</span> net(<span class="op">**</span>batch)</span>
-<span id="cb13-23"><a href="#cb13-23"></a>          logits <span class="op">=</span> outputs.get(<span class="st">"logits"</span>)</span>
-<span id="cb13-24"><a href="#cb13-24"></a>          <span class="co"># Since the URL dataset is highly imbalanced with benign URLs (label 0) dominate the dataset, we use weighted loss function to tackle the problem.</span></span>
-<span id="cb13-25"><a href="#cb13-25"></a>          loss_fct <span class="op">=</span> nn.CrossEntropyLoss(</span>
-<span id="cb13-26"><a href="#cb13-26"></a>                        weight<span class="op">=</span>torch.tensor([<span class="fl">1.0</span>, <span class="fl">10.0</span>, <span class="fl">10.0</span>, <span class="fl">10.0</span>], </span>
-<span id="cb13-27"><a href="#cb13-27"></a>                        device<span class="op">=</span>DEVICE)</span>
-<span id="cb13-28"><a href="#cb13-28"></a>                      )</span>
-<span id="cb13-29"><a href="#cb13-29"></a>          labels <span class="op">=</span> batch.get(<span class="st">"labels"</span>)</span>
-<span id="cb13-30"><a href="#cb13-30"></a>          loss <span class="op">=</span> loss_fct(logits.view(<span class="op">-</span><span class="dv">1</span>, NUM_LABELS), labels.view(<span class="op">-</span><span class="dv">1</span>))</span>
-<span id="cb13-31"><a href="#cb13-31"></a>          <span class="co"># loss = outputs.loss</span></span>
-<span id="cb13-32"><a href="#cb13-32"></a>          loss.backward()</span>
-<span id="cb13-33"><a href="#cb13-33"></a>          optimizer.step()</span>
-<span id="cb13-34"><a href="#cb13-34"></a>          optimizer.zero_grad()</span>
-<span id="cb13-35"><a href="#cb13-35"></a>      </span>
-<span id="cb13-36"><a href="#cb13-36"></a>    torch.cuda.empty_cache()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="co">    net : nn.Module</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="co">        The neural network to train.</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="co">    trainloader : DataLoader</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="co">        The data loader containing the training data.</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="co">    epochs : int</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a><span class="co">        The number of epochs to train for.</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a></span>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="co">    Returns</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="co">    -------</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="co">    None</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="co">    """</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a></span>
+<span id="cb13-19"><a href="#cb13-19"></a>    optimizer <span class="op">=</span> AdamW(net.parameters(), lr<span class="op">=</span><span class="fl">5e-5</span>)</span>
+<span id="cb13-20"><a href="#cb13-20"></a></span>
+<span id="cb13-21"><a href="#cb13-21"></a>    <span class="cf">for</span> _ <span class="kw">in</span> tqdm.tqdm(<span class="bu">range</span>(epochs), desc<span class="op">=</span><span class="st">'epoch'</span>):</span>
+<span id="cb13-22"><a href="#cb13-22"></a>      net.train()</span>
+<span id="cb13-23"><a href="#cb13-23"></a>      total_loss <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb13-24"><a href="#cb13-24"></a>      <span class="cf">for</span> batch <span class="kw">in</span> tqdm.tqdm(trainloader, desc<span class="op">=</span><span class="st">'iterate data'</span>):</span>
+<span id="cb13-25"><a href="#cb13-25"></a>          batch <span class="op">=</span> {k: v.to(DEVICE) <span class="cf">for</span> k, v <span class="kw">in</span> batch.items()}</span>
+<span id="cb13-26"><a href="#cb13-26"></a>          outputs <span class="op">=</span> net(<span class="op">**</span>batch)</span>
+<span id="cb13-27"><a href="#cb13-27"></a>          logits <span class="op">=</span> outputs.get(<span class="st">"logits"</span>)</span>
+<span id="cb13-28"><a href="#cb13-28"></a>          loss_fct <span class="op">=</span> nn.CrossEntropyLoss(</span>
+<span id="cb13-29"><a href="#cb13-29"></a>                        weight<span class="op">=</span>torch.tensor([<span class="fl">1.0</span>, <span class="fl">10.0</span>, <span class="fl">10.0</span>, <span class="fl">10.0</span>], </span>
+<span id="cb13-30"><a href="#cb13-30"></a>                        device<span class="op">=</span>DEVICE)</span>
+<span id="cb13-31"><a href="#cb13-31"></a>                      )</span>
+<span id="cb13-32"><a href="#cb13-32"></a>          labels <span class="op">=</span> batch.get(<span class="st">"labels"</span>)</span>
+<span id="cb13-33"><a href="#cb13-33"></a>          loss <span class="op">=</span> loss_fct(logits.view(<span class="op">-</span><span class="dv">1</span>, NUM_LABELS), labels.view(<span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb13-34"><a href="#cb13-34"></a>          loss.backward()</span>
+<span id="cb13-35"><a href="#cb13-35"></a>          optimizer.step()</span>
+<span id="cb13-36"><a href="#cb13-36"></a>          optimizer.zero_grad()</span>
+<span id="cb13-37"><a href="#cb13-37"></a>          total_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb13-38"><a href="#cb13-38"></a>      </span>
+<span id="cb13-39"><a href="#cb13-39"></a>    torch.cuda.empty_cache()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="execution" class="level2">
 <h2 class="anchored" data-anchor-id="execution">Execution</h2>

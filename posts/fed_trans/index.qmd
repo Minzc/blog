@@ -63,23 +63,36 @@ The `Client` interface serves as the primary means of communication between the 
 
 ```python
 class MalURLClient(fl.client.NumPyClient):
-    def __init__(self, cid, net, trainloader, valloader):
+    def __init__(self, cid: str, 
+                 net: torch.nn.Module, 
+                 trainloader: DataLoader, 
+                 valloader: DataLoader,
+                 epoch: int) -> None:
         """
+        Initializes the class with the specified parameters.
+
         Parameters
         ----------
-        cid: 
-            Client ID.
-        net: 
-            Model object.
-        trainloader: 
-            Dataloader for local training dataset.
-        valloader: 
-            Dataloader for validation dataset.
+        cid : str
+            A string representing the ID of the class.
+        net : torch.nn.Module
+            The neural network to use in the class.
+        trainloader : DataLoader
+            The data loader for the training set.
+        valloader : DataLoader
+            The data loader for the validation set.
+        epoch : int
+            The number of epochs to train for.
+
+        Returns
+        -------
+        None
         """
         self.net = net
         self.trainloader = trainloader
-        self.testloader = valloader
-        self.cid = cid   
+        self.valloader = valloader
+        self.cid = cid
+        self.epoch = epoch  
     # Other necessary functions, which will be introduced below
 ```
 
@@ -88,18 +101,19 @@ Implementing `Client` interface typically involves defining the following method
 **get_parameters**: return the model weight as a list of NumPy ndarrays
 
 ```python
-def get_parameters(self, config):
+def get_parameters(self, config: dict) -> List[np.ndarray]:
     """
+    Returns a list of the parameters of the neural network in the class.
+
     Parameters
     ----------
-    config:
-        Configuration parameters requested by the server.
-        This can be used to tell the client which parameters
-        are needed along with some Scalar attributes.
+    config : dict
+        A dictionary containing configuration parameters.
+
     Returns
     -------
-    parameters: 
-        The local model parameters as a list of NumPy ndarrays.
+    List[np.ndarray]
+        A list of numpy arrays containing the parameters of the neural network.
     """
     return [val.cpu().numpy() for _, val in self.net.state_dict().items()]
 ```
@@ -107,14 +121,21 @@ def get_parameters(self, config):
 **set_parameters**: update the local model weights with the parameters received from the server
 
 ```python
-def set_parameters(self, net, parameters):
+def set_parameters(net: nn.Module, parameters: List[torch.Tensor]) -> nn.Module:
     """
+    Sets the parameters of a PyTorch neural network module to the specified tensors.
+
     Parameters
     ----------
-    net: 
-        The model to be trained.
-    parameters: 
-        The model paremters received from the central server.
+    net: nn.Module
+        The neural network module to set the parameters for.
+    parameters: List[torch.Tensor]
+        The list of tensors to set the parameters of the neural network module to.
+
+    Returns
+    -------
+    nn.Module
+        The neural network module with updated parameters.
     """
     params_dict = zip(net.state_dict().keys(), parameters)
     state_dict = OrderedDict({k: torch.Tensor(v) for k, v in params_dict})
@@ -136,7 +157,8 @@ def fit(self, parameters, config):
         The model parameters received from the central server.
     config: 
         Configuration parameters which allow the
-        server to influence training on the client. It can be used to communicate arbitrary values from the server to the client, for example, to set the number of (local) training epochs.
+        server to influence training on the client. It can be used to communicate arbitrary values from the server to the client,
+        for example, to set the number of (local) training epochs.
     Returns
     -------
     parameters: 
@@ -148,11 +170,11 @@ def fit(self, parameters, config):
         bool, bytes, float, int, or str. It can be used to communicate
         arbitrary values back to the server.
     """
-    set_parameters(net, parameters)
+    set_parameters(self.net, parameters)
     print("Training Started...")
     # train_client function train the local model using the client' local dataset.
     # train_client function is defined in the utility file
-    train_client(self.net, self.trainloader, epochs=1)
+    train(self.net, self.trainloader, epochs=self.epoch)
     print("Training Finished.")
     return self.get_parameters(config), len(self.trainloader), {}
 ```
@@ -180,7 +202,7 @@ def evaluate(self, parameters, config):
         type bool, bytes, float, int, or str. It can be used to
         communicate arbitrary values back to the server.
     """
-    self.net = set_parameters(net, parameters)
+    self.net = set_parameters(self.net, parameters)
     # test function is defined in the utility file.
     valid_loss, valid_accuracy, valid_f1 = test(self.net, self.valloader)
     metrics = {
@@ -188,14 +210,14 @@ def evaluate(self, parameters, config):
         "valid_loss": float(valid_loss),
         'valid_f1': float(valid_f1),
     }
-    return float(valid_loss), len(self.testloader), rsmetricst
+    return float(valid_loss), len(self.valloader), metrics
 ```
 
-Next, let's create an instance of our client class, and run it using the following line:
+<!-- Next, let's create an instance of our client class, and run it using the following line:
 
 `fl.client.start_numpy_client(server_address="[::]:8080", client=CifarClient())`
 
-The string `[::]:8080` specifies which server the client should connect to. The string `[::]` means that the server and client are running on the same machine. If we were to run a truly federated learning with the server and clients on different machines, we would need to update the server_address to point the client to the correct server.
+The string `[::]:8080` specifies which server the client should connect to. The string `[::]` means that the server and client are running on the same machine. If we were to run a truly federated learning with the server and clients on different machines, we would need to update the server_address to point the client to the correct server. -->
 
 ## Server 
 
@@ -217,32 +239,40 @@ Next, let's implement our server using the FedAvg strategy provided by `Flower`.
 
 
 ```python
-def get_evaluate_fn(net, testloader):
+def get_evaluate_fn(net: torch.nn.Module, testloader: DataLoader) -> Callable[[int, Any, dict], Tuple[float, dict]]:
     """
     Return an evaluation function for centralized evaluation.
+
     Parameters
     ----------
-    net:
-        Model to be evaluated.
-    testloader:
-        Dataset loader.
+    net : torch.nn.Module
+        The model to be evaluated.
+    testloader : DataLoader
+        The dataset loader.
+    Returns
+    -------
+    Callable[[int, Any, dict], Tuple[float, dict]]
+        A function that evaluates the model on the given test data and returns the evaluation loss and metrics.
     """
-    def evaluate(server_round, parameters, config):
+    def evaluate(server_round: int, parameters: Any, config: dict) -> Tuple[float, dict]:
         """
+        Evaluate the model on the given test data and return the evaluation loss and metrics.
+
         Parameters
         ----------
-        server_round:
+        server_round : int
             The current epoch of federated learning.
-        parameters:
+        parameters : Any
             The current (global) model parameters.
-        config : 
+        config : dict
             Same as the config in fit.
+
         Returns
         -------
-        loss : float
-            The evaluation loss of the model on the local dataset.
+        Tuple[float, dict]
+            A tuple containing the evaluation loss and a dictionary of evaluation metrics.
         """
-        set_parameters(net, parameters)  # 'net' is the global model .Update model with the latest parameters
+        set_parameters(net, parameters)  # 'net' is the global model. Update model with the latest parameters
         loss, accuracy, f1 = test(net, testloader)
         return loss, {"accuracy": accuracy, 'f1': f1}
 
@@ -259,7 +289,7 @@ def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
 
     Parameters
     ----------
-    metrics:
+    metrics: List[Tuple[int, Metrics]]
         The list of local evaluation metrics sent by clients.
         metrics[idx] is the evaluation sent by the `idx` evaluation client.
         metrics[idx][0] is the number of records of the corresponding client.
@@ -267,7 +297,7 @@ def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
 
     Returns
     -------
-    weight_metrics :
+    weight_metrics: Metrics
         The weighted average of the federated evaluation.
     """
     weight_metrics = {}
@@ -302,49 +332,52 @@ To investigate the impact of local data distribution on the performance of the g
 **prepare_train_test_even**: partition the dataset into the local training data of clients, and a server side testing data.
 
 ```python
-def _train_test_split(loca_data):
+def _train_test_split(local_data: Dataset) -> DatasetDict:
     """
-    Split the given dataset to training and testing datasets
+    This function splits a given local dataset of a client into training and validation datasets.
+
     Parameters
     ----------
-    loca_data:
-        The local dataset of a client, which will be split into training and validation datasets.
+    loca_data (Dataset): 
+        The local dataset of a client to be split.
 
     Returns
     -------
-    data_dict:
-        The training and validation datasets of a client
+    data_dict (DatasetDict): 
+        The training and validation datasets of the client.
     """
-    train_val_client_split = loca_data.train_test_split(test_size=0.2, seed=42)  # 80% local training data, 20% local validation data
+    train_val_client_split = local_data.train_test_split(test_size=0.2, seed=RANDOM_SEEDS)  # 80% local training data, 20% local validation data
     data_dict = DatasetDict({
                 'train': train_val_client_split['train'],
                 'validation': train_val_client_split['test'],
                 })
     return data_dict
 
-def prepare_train_test_iid(raw_datasets):
+
+def prepare_train_test_iid(raw_datasets: Dataset,  num_clients: int) -> Tuple[List[DatasetDict], Dataset]:
     """
-    Generate IID datasets for clients.
+    Prepares the training and testing datasets for a federated learning scenario where the data is partitioned across 
+    multiple clients in an IID (Independent and Identically Distributed) manner.
 
     Parameters
     ----------
-    raw_datasets:
-        The entire dataset will be split into local datases for each client.
-    
+    raw_datasets: Dataset
+        The raw dataset containing the URLs and their corresponding labels.
+
     Returns
     -------
-    client_datasets:
-        The list of client local datasets will consist of DataDict objects, with each object containing the training and validation datasets for a single client. 
-    server_test_dataset:
+    client_datasets: List[DatasetDict]
+        A list of datasets for each client, each containing the training and validation subsets.
+    server_test_dataset: Dataset
         The dataset used by the central server for central evaluation.
     """
     train_test_split = raw_datasets.train_test_split(test_size=0.2, seed=42)
     client_dataset = train_test_split['train']
     server_test_dataset = train_test_split['test']
-    partition_size = len(global_train_dataset) // NUM_CLIENTS # `NUM_CLIENTS` is the total number of clients in the federated learning process. `partition_size` is the number of records in each client's local data.
+    partition_size = len(client_dataset) // num_clients # `num_clients` is the total number of clients in the federated learning process. `partition_size` is the number of records in each client's local data.
 
     client_datasets = []
-    for _ in range(NUM_CLIENTS):
+    for _ in range(num_clients):
         client_split = client_dataset.train_test_split(train_size=partition_size)
         client_dataset = client_split['test'] # The remaining data will be divided among the other clients.
         client_datasets.append(_train_test_split(client_split['train']))
@@ -355,12 +388,26 @@ def prepare_train_test_iid(raw_datasets):
 
 
 ```python
-def prepare_train_test_noniid(raw_datasets):
+def prepare_train_test_noniid(raw_datasets: Dataset, num_clients: int) -> Tuple[List[DatasetDict], Dataset]:
     """
-    Generate non-IID datasets for clients.
+    Prepares the training and testing datasets for a federated learning scenario where the data is partitioned across 
+    multiple clients in a non-IID (Non-Independent and Identically Distributed) manner.
 
-    Parameters and returns are the same as those `prepare_train_test_iid`
+    Parameters
+    ----------
+    raw_datasets: Dataset
+        The raw dataset containing the URLs and their corresponding labels.
+    num_clients: int
+        The total number of clients in the federated learning process.
+
+    Returns
+    -------
+    client_datasets: List[DatasetDict]
+        A list of datasets for each client, each containing the training and validation subsets.
+    server_test_dataset: Dataset
+        The dataset used by the central server for central evaluation.
     """
+
     train_test_split = raw_datasets.train_test_split(test_size=0.2, seed=42)
     clients_dataset, server_test_dataset = train_test_split['train'], train_test_split['test']
     # label_id 0: benign
@@ -368,11 +415,11 @@ def prepare_train_test_noniid(raw_datasets):
     # label_id 2: phishing
     # label_id 3: defacement
     whole_benign = clients_dataset.filter(lambda x: x['labels'] == 0)
-    benign_size_per_client = len(whole_bening) // NUM_CLIENTS
+    benign_size_per_client = len(whole_benign) // num_clients
 
     client_datasets = []
     # Class 0 is benign
-    for cid in range(NUM_CLIENTS):
+    for cid in range(num_clients):
         abnormal_urls = clients_dataset.filter(lambda x: x['labels'] == (cid + 1)) 
         client_split = whole_benign.train_test_split(train_size=benign_size_per_client, seed=42)
         local_benign, whole_benign = client_split['train'], client_split['test']
@@ -415,16 +462,22 @@ After prepraing our datasets, next step is to define our model. For this project
 The created model instance `net` consists of a pre-trained distilled BERT model and a linear layer for sequence label prediction.
 
 ```python
-def init_model(num_labels, fine_tune=True):
+def init_model(num_labels: int, fine_tune: bool = True) -> torch.nn.Module:
     """
     Initialize a BERT based sequence classifier.
 
     Parameters
     ----------
+    num_labels:
+        The number of classes the model should predict.
     fine_tune:
         If we want to fine tune the parameters of the pre-trained BERT model.
+
+    Returns
+    -------
+    net:
+        A BERT-based sequence classifier model with the specified number of labels. 
     """
-    CHECKPOINT = "distilbert-base-uncased" # Model name
     net = AutoModelForSequenceClassification.from_pretrained(CHECKPOINT, num_labels=num_labels).to(DEVICE)
 
     if fine_tune == False:
@@ -439,40 +492,43 @@ def init_model(num_labels, fine_tune=True):
 We are almost done with our implementation. The final step is to implement the training function to train our model. 
 
 ```python
-def train(net, trainloader, epochs, testloader):
+def train(net: nn.Module, trainloader: DataLoader, epochs: int) -> None:
     """
-    The training function is used by clients to train their local model during the federated learning process.
+    Train the given neural network for the specified number of epochs using the given data loader.
 
     Parameters
     ----------
-    net:
-        The local model to be trained.
-    trainloader:
-        The DataLoader of training data.
-    epochs:
-        The number of epochs for client training during the federated learning process.
-    testloader:
-        The DataLoader of test data.
+    net : nn.Module
+        The neural network to train.
+    trainloader : DataLoader
+        The data loader containing the training data.
+    epochs : int
+        The number of epochs to train for.
+
+    Returns
+    -------
+    None
     """
+
     optimizer = AdamW(net.parameters(), lr=5e-5)
 
     for _ in tqdm.tqdm(range(epochs), desc='epoch'):
       net.train()
+      total_loss = 0
       for batch in tqdm.tqdm(trainloader, desc='iterate data'):
           batch = {k: v.to(DEVICE) for k, v in batch.items()}
           outputs = net(**batch)
           logits = outputs.get("logits")
-          # Since the URL dataset is highly imbalanced with benign URLs (label 0) dominate the dataset, we use weighted loss function to tackle the problem.
           loss_fct = nn.CrossEntropyLoss(
                         weight=torch.tensor([1.0, 10.0, 10.0, 10.0], 
                         device=DEVICE)
                       )
           labels = batch.get("labels")
           loss = loss_fct(logits.view(-1, NUM_LABELS), labels.view(-1))
-          # loss = outputs.loss
           loss.backward()
           optimizer.step()
           optimizer.zero_grad()
+          total_loss += loss.item()
       
     torch.cuda.empty_cache()
 ```
