@@ -51,7 +51,7 @@ The project consists of three major components.
 - `server.py` includes functions and classes used by the central server for model parameter aggregation.
 - `util.py` includes utility functions.
 
-The code for the project, along with installation instructions for the required libraries, is available on GitHub.
+The code for the project, along with installation instructions for the required libraries, is available on GitHub [Source Code](https://github.com/Minzc/federated_transformer_malicious_url).
 
 In the following sections, first, I'll introduce the client implementations, followed by the server implementations. Then, I'll discuss the utility functions. Finally, I'll explain how to run the federated learning process.
 
