@@ -23,7 +23,11 @@ about:
 ### Hi there!
 
 <p> 
-I'm a Staff Software Engineer at <a href="https://www.fortinet.com" target="_blank" style="">Fortinet</a>, in charge of developing Machine Learning models for cybersecurity threats detection and prevention. I am passionate about developing Data Mining and Machine Learning algorithms that can extract insights from very large scale log data, graphs and text corpus, such as Frequent Pattern Mining and Graph Neural Networks. Prior to Fortinet, I worked at <a href="https://www.datastory.com.cn" target="_blank" style="">Datastory</a> as a software engineer, working on analyzing social network data.
+I'm a AI/ML manager at <a href="https://www.zscaler.com" target="_blank" style="">Zscaler</a>, leading the development of machine learning models for cybersecurity threats detection and prevention. Prior to Zscaler, I was a Staff Software Engineer at <a href="https://www.fortinet.com" target="_blank" style="">Fortinet</a> working on applying ML techniques for IoC discovery. Prior to Fortinet, I worked at <a href="https://www.datastory.com.cn" target="_blank" style="">Datastory</a> as a software engineer, working on analyzing social network data. 
+</p>
+
+<p> 
+I am passionate about developing Data Mining and Machine Learning algorithms that can extract insights from very large scale log data, graphs and text corpus, such as Frequent Pattern Mining,  Graph Neural Networks, and LLM. 
 </p>
 
 <p> I received my Ph.D. in Computing Science from Simon Fraser University in 2022, advised by Professor <a href="https://sites.google.com/view/jpei/jian-peis-homepage" target="_blank" style="">Jian Pei</a>. Prior to that, I obtained my Master degree in Computing Science from Simon Fraser University and Bachelor degree from the School of Software Engineering, Sun Yat-sen University. </p>
@@ -33,6 +37,7 @@ I'm a Staff Software Engineer at <a href="https://www.fortinet.com" target="_bla
 ### Research Interest
 I am interested in Cloud Computing, Trustworhty Data Analytics, and Data Pricing. My current focuses include:
 
+- Applying Large Language Model to facilitate log analysis
 - Interpretation on deep neural networks and statistical hypothesis
 - Fairness on graph neural networks
 - Efficient, scalable, and interpretable data pricing models
@@ -40,7 +45,9 @@ I am interested in Cloud Computing, Trustworhty Data Analytics, and Data Pricing
 
 ### Publications
 
-- **Zicun Cong**, Baoxu Shi, Shan Li, Jaewon Yang, Jian Pei, Qi He. "FairSample: Training Fair and Accurate Graph Neural Networks Efficiently." Under review
+- **Zicun Cong**, Baoxu Shi, Shan Li, Jaewon Yang, Jian Pei, Qi He. "FairSample: Training Fair and Accurate Graph Neural Networks Efficiently." TKDE 2023
+  <br>
+<u><a href="https://arxiv.org/pdf/2401.14702.pdf" target="_blank">[paper]</a></u>
 - Jay Xu, Jian Pei, **Zicun Cong**. "Finding Multidimensional Simpson's Paradox." SIGKDD Explorations
 <br>
 <u><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4231689" target="_blank">[paper]</a></u>
