@@ -1,21 +1,8 @@
 [
   {
-    "listing": "/index.html",
-    "items": [
-      "/posts/fed_trans/index.html",
-      "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html"
-    ]
-  },
-  {
-    "listing": "/index_bak.html",
-    "items": [
-      "/posts/fed_trans/index.html"
-    ]
-  },
-  {
     "listing": "/posts.html",
     "items": [
+      "/posts/building_efficient_universal_classifiers_with_natural_language_inference/index.html",
       "/posts/fed_trans/index.html"
     ]
   }
