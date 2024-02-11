@@ -67,5 +67,7 @@ I am interested in Cloud Computing, Trustworhty Data Analytics, and Data Pricing
 <u><a href="https://www2.cs.sfu.ca/~jpei/KDD21Tutorial/" target="_blank">[tutorial webpage]</a></u>
 
 ### Thesis
-- Towards Trustworthy Data Analytics: Algorithmic Tools for Interpretability and Fairness<u><a href="https://summit.sfu.ca/_flysystem/fedora/2022-11/etd22005.pdf" target="_blank">[PhD Thesis]</a></u>
--  Mining Identification Rules for Classifying Mobile Application Traffic<u><a href="https://summit.sfu.ca/_flysystem/fedora/sfu_migrate/16636/etd9756_ZCong.pdf" target="_blank">[Master Thesis]</a></u>
+- Towards Trustworthy Data Analytics: Algorithmic Tools for Interpretability and Fairness
+<br><u><a href="https://summit.sfu.ca/_flysystem/fedora/2022-11/etd22005.pdf" target="_blank">[PDF]</a></u>
+-  Mining Identification Rules for Classifying Mobile Application Traffic<u>
+  <br><a href="https://summit.sfu.ca/_flysystem/fedora/sfu_migrate/16636/etd9756_ZCong.pdf" target="_blank">[PDF]</a></u>
