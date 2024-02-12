@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/log_summary/index.html",
       "/posts/building_efficient_universal_classifiers_with_natural_language_inference/index.html",
       "/posts/fed_trans/index.html"
     ]
