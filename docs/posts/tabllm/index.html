@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Zicun Cong">
+<meta name="dcterms.date" content="2024-02-19">
 
-<title>Zicun Cong's Homepage – posts</title>
+<title>Zicun Cong’s Homepage - TabLLM: Few-shot Classification of Tabular Data with Large Language Models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -60,40 +60,9 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -103,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Zicun Cong’s Homepage</span>
     </a>
   </div>
@@ -114,11 +83,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./posts.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../posts.html" rel="" target="">
  <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
@@ -139,221 +108,89 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">TabLLM: Few-shot Classification of Tabular Data with Large Language Models</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">nlp</div>
+                <div class="quarto-category">paper</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Zicun Cong </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 19, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div><div class="category" data-category="federated learning">federated learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nlp">nlp <span class="quarto-category-count">(5)</span></div><div class="category" data-category="paper">paper <span class="quarto-category-count">(4)</span></div><div class="category" data-category="project">project <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link active" data-scroll-target="#tldr">TLDR</a></li>
+  <li><a href="#technical" id="toc-technical" class="nav-link" data-scroll-target="#technical">Technical</a></li>
+  <li><a href="#experiment" id="toc-experiment" class="nav-link" data-scroll-target="#experiment">Experiment</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
 
 
+<section id="tldr" class="level1">
+<h1>TLDR</h1>
+<p>The study introduces a method that employs LLMs for zero-shot and few-shot classification of tabular data by serializing the data into natural-language strings. This approach not only simplifies the process but also demonstrates superior performance over traditional deep-learning and gradient-boosted tree methods in various benchmarks. Particularly, in the few-shot learning scenario, this method shows promising improvements in predictive performance.</p>
+</section>
+<section id="technical" class="level1">
+<h1>Technical</h1>
+<p>The core of their methodology involves the conversion of tabular data into a format understandable by LLMs—natural language strings. This serialization process, coupled with a brief description of the classification problem, prepares the data for processing by LLMs without prior training specifically on tabular data. They explored several serialization techniques, including templates and table-to-text models, to identify the most effective method. Their experiments utilized the T0 language model and GPT-3, leveraging their inherent understanding of natural language to classify tabular datasets accurately.</p>
+<p>In the few-shot setting, they fine-tuned the LLM using a subset of labeled examples through a parameter-efficient method known as T-Few. This approach allowed us to adapt the LLM’s parameters specifically for their classification tasks, improving accuracy with minimal data.</p>
+<p>We first serialize the feature names and values into a natural language string. They evaluate different strategies. This string is then combined with a task-specific prompt. To get predictions, we obtain output probabilities from the LLM for each of a pre-specified set of verbalizer tokens (e.g., “Yes”, “No”), which map to class labels (e.g., 1, −1). If 𝑘 &gt; 0, they use the 𝑘 labeled examples to fine-tune the large language model using T-Few (Liu et al., 2022). Finally, they use the (possibly tuned) large language model to obtain predictions on unlabeled examples. The example prompt is shown in Figure 2.</p>
+<p align="center">
+<img src="method.png" alt="Figure 1. Overview of TabLLM. " width="100%">
+</p>
+<p align="center">
+<img src="example_prompt.png" alt="Figure 2. Prompt Example." width="30%">
+</p>
+</section>
+<section id="experiment" class="level1">
+<h1>Experiment</h1>
+<p>Figure 3. shows the average AUC and SD of different serializations across nine public datasets. The Text Template serialization performed very well across all experiments. In the zero-shot setting, the Text Template showed improvements over List Template, indicating the benefit of a serialization that is closer to the training distribution of T0. However, these differences al- ready vanished for 8 training examples. Hence, very few training examples might already suffice to adjust for dif- ferent templates. This suggests that sophisticated serializa- tions might be unnecessary when some training data exists. An interesting finding is that LLM for serialization performs worse than the simple text template based method, as the LLM can have hallucination, which introduces noise into the training data. Using only feature values had a poor performance for zero and very few shots, but the performance equalized with more training examples.</p>
+<p align="center">
+<img src="serialization_effects.png" alt="Figure 3. Average AUC and SD of different serializations across nine public datasets. Text Template performs best for zero and few training examples. For many examples, the performance of different serializations converges." width="50%">
+</p>
+<p>Figure 4 shows the average AUC and SD of TabLLM versus all baseline models across nine public datasets. In all cases, TabLLM’s performance improved with a higher number of shots. In the zero-shot setting, TabLLM was on par with GPT-3 even though GPT-3 is a much larger model than T0 (175B vs.&nbsp;11B parame- ters). TabPFN consistently outperformed the other baseline models across all numbers of training examples. TabPFN reached TabLLM’s performance with 4 to 256 (Income) training examples. LR was the second-best baseline of- ten beating the tree models, which might be due to our ex- tensive parameter tuning (see Sec. 4 in the Supplement). TabLLM outperformed or was on par with the tree ensem- ble baselines until 256 training examples for all datasets except Calhousing and Jungle. For fewer shots, it often outperformed them by a large margin. XGBoost performed relatively poorly for few shots, which was probably due to overfitting on the small training and validation sets (as de- scribed in the previous section, we do not use large valida- tion sets for hyperparameter tuning to ensure the results are truly few-shot).</p>
+<p align="center">
+<img src="performance.png" alt="Figure 4. Average AUC and SD of TabLLM versus all baseline models across nine public datasets. TabLLM outperforms all baselines for zero and very few training examples. TabPFN is the strongest baseline." width="50%">
+</p>
 
 
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="nlp,paper" data-listing-date-sort="1708329600000" data-listing-file-modified-sort="1708394864049" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<div class="thumbnail">
-<p><a href="./posts/tabllm/index.html"> <p class="card-img-top"><img src="posts/tabllm/method.png" alt="Figure 1. Overview of TabLLM. "  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/tabllm/index.html">
-<h3 class="no-anchor listing-title">
-TabLLM: Few-shot Classification of Tabular Data with Large Language Models
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('nlp'); return false;">
-nlp
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('paper'); return false;">
-paper
-</div>
-</div>
-<a href="./posts/tabllm/index.html">
-<div class="listing-description">
-The study introduces a method that employs LLMs for zero-shot and few-shot classification of tabular data by serializing the data into natural-language strings. This…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/tabllm/index.html">
-<div class="listing-date">
-Feb 19, 2024
-</div>
-<div class="listing-author">
-Zicun Cong
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="nlp,paper" data-listing-date-sort="1707811200000" data-listing-file-modified-sort="1707971339115" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
-<div class="thumbnail">
-<p><a href="./posts/cyber/FewShotLearningofTTPsClassificationUsingLargeLanguageModels/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/cyber/FewShotLearningofTTPsClassificationUsingLargeLanguageModels/index.html">
-<h3 class="no-anchor listing-title">
-Few-Shot Learning of TTPs Classification Using Large Language Models
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('nlp'); return false;">
-nlp
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('paper'); return false;">
-paper
-</div>
-</div>
-<a href="./posts/cyber/FewShotLearningofTTPsClassificationUsingLargeLanguageModels/index.html">
-<div class="listing-description">
-This paper proposes a method that combines ChatGPT data augmentation with Instruction Supervised Fine-Tuning of open large language models.
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/cyber/FewShotLearningofTTPsClassificationUsingLargeLanguageModels/index.html">
-<div class="listing-date">
-Feb 13, 2024
-</div>
-<div class="listing-author">
-Zicun Cong
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="nlp,paper" data-listing-date-sort="1707552000000" data-listing-file-modified-sort="1707723458854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<div class="thumbnail">
-<p><a href="./posts/log_summary/index.html"> <p class="card-img-top"><img src="posts/log_summary/example.png" alt="Figure 1. Illustration of example summarization"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/log_summary/index.html">
-<h3 class="no-anchor listing-title">
-Summarizing Logs with Pre-Trained Language Models
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('nlp'); return false;">
-nlp
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('paper'); return false;">
-paper
-</div>
-</div>
-<a href="./posts/log_summary/index.html">
-<div class="listing-description">
-In the complex landscape of IT operations, where the sheer volume of data can overwhelm even the most seasoned system engineers, the advent of AIOps (Artificial Intelligence…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/log_summary/index.html">
-<div class="listing-date">
-Feb 10, 2024
-</div>
-<div class="listing-author">
-Zicun Cong
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="nlp,paper" data-listing-date-sort="1707465600000" data-listing-file-modified-sort="1707617724324" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<div class="thumbnail">
-<p><a href="./posts/building_efficient_universal_classifiers_with_natural_language_inference/index.html"> <p class="card-img-top"><img src="posts/building_efficient_universal_classifiers_with_natural_language_inference/figure_1.png" alt="Figure 1. Illustration of universal classification"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/building_efficient_universal_classifiers_with_natural_language_inference/index.html">
-<h3 class="no-anchor listing-title">
-Building Efficient Universal Classifiers with Natural Language Inference
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('nlp'); return false;">
-nlp
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('paper'); return false;">
-paper
-</div>
-</div>
-<a href="./posts/building_efficient_universal_classifiers_with_natural_language_inference/index.html">
-<div class="listing-description">
-Let’s face it: understanding and categorizing text can be a headache. Usually, you need to teach a computer model with lots of specific examples to get it right. But what if…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/building_efficient_universal_classifiers_with_natural_language_inference/index.html">
-<div class="listing-date">
-Feb 9, 2024
-</div>
-<div class="listing-author">
-Zicun Cong
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="project,nlp,federated learning" data-listing-date-sort="1682060400000" data-listing-file-modified-sort="1682309650797" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="27">
-<div class="thumbnail">
-<p><a href="./posts/fed_trans/index.html"> <p class="card-img-top"><img src="posts/fed_trans/federated_learning.png" alt="Example of Federated Learning"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/fed_trans/index.html">
-<h3 class="no-anchor listing-title">
-Federated Malicious URL Detection with Flower and Transformers
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('project'); return false;">
-project
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('nlp'); return false;">
-nlp
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('federated learning'); return false;">
-federated learning
-</div>
-</div>
-<a href="./posts/fed_trans/index.html">
-<div class="listing-description">
-Cybersecurity is becoming increasingly important in today’s digital landscape, and malicious URLs are one of the most common ways for attackers to compromise user systems.…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/fed_trans/index.html">
-<div class="listing-date">
-Apr 21, 2023
-</div>
-<div class="listing-author">
-Zicun Cong
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

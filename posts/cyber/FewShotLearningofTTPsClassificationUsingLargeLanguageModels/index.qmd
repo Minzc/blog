@@ -1,0 +1,24 @@
+---
+title: "Few-Shot Learning of TTPs Classification Using Large Language Models"
+author: "Zicun Cong"
+date: "2024-02-13"
+# bibliography: references.bib
+categories: [nlp, paper]
+format:
+    html:
+        code-overflow: scroll
+        code-block-border-left: true
+        code-block-bg: true
+        highlight-style: github
+        code-line-numbers: true
+        code-fold: true
+---
+This paper proposes a method that combines ChatGPT data augmentation with Instruction Supervised Fine-Tuning of open large language models.
+
+Real-world TTPs are often embedded in a vast amount of heterogeneous unstructured text. Relying solely on manual identification requires significant human resources and effort. Automating the efficient classification of TTPs from unstructured text becomes a crucial task.
+
+Prominent TTPs description frameworks include Stride, Cyber Kill Chain, and MITRE ATT&CK. 
+
+1. This method which exhibits a long-tail issue [9] results in a lack of categories for 108 techniques, with some having only descriptions and others having only one procedure example.
+2. Traditional data augmentation methods prove insufficient to meet the needs of preserving context semantic integrity and enhancing the diversity of training samples.
+
