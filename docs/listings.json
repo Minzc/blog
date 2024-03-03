@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/cyber/hackmentor/index.html",
       "/posts/tabllm/index.html",
       "/posts/cyber/FewShotLearningofTTPsClassificationUsingLargeLanguageModels/index.html",
       "/posts/log_summary/index.html",

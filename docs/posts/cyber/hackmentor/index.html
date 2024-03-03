@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.333">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Zicun Cong">
+<meta name="dcterms.date" content="2024-03-01">
+
+<title>Zicun Cong’s Homepage - HackMentor: Fine-Tuning Large Language Models for Cybersecurity</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Zicun Cong’s Homepage</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../posts.html" rel="" target="">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.linkedin.com/in/zicun-cong-390086a4/" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text">LinkedIn</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/Minzc" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text">Github</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">HackMentor: Fine-Tuning Large Language Models for Cybersecurity</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">nlp</div>
+                <div class="quarto-category">paper</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Zicun Cong </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 1, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#technical-in-depth-discussion" id="toc-technical-in-depth-discussion" class="nav-link active" data-scroll-target="#technical-in-depth-discussion">Technical In-depth Discussion:</a>
+  <ul class="collapse">
+  <li><a href="#cybersecurity-instructions" id="toc-cybersecurity-instructions" class="nav-link" data-scroll-target="#cybersecurity-instructions">Cybersecurity Instructions</a></li>
+  <li><a href="#cybersecurity-conversations" id="toc-cybersecurity-conversations" class="nav-link" data-scroll-target="#cybersecurity-conversations">Cybersecurity Conversations</a></li>
+  </ul></li>
+  <li><a href="#experiment-discussion-and-summary" id="toc-experiment-discussion-and-summary" class="nav-link" data-scroll-target="#experiment-discussion-and-summary">Experiment Discussion and Summary:</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+
+
+
+
+<p><strong>TLDR:</strong></p>
+<p>The paper introduces a methodology for enhancing the performance of large language models (LLMs) in cybersecurity applications. The authors propose the fine-tuning of existing LLMs using specialized domain instructions and conversations to create models termed HackMentor. These models outperform traditional LLMs by 10-25% in tasks aligned with cybersecurity prompts, providing more concise, human-like responses and facilitating localized, private deployment for data security.</p>
+<section id="technical-in-depth-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="technical-in-depth-discussion">Technical In-depth Discussion:</h2>
+<p align="center">
+<img src="overview.png" alt="" width="80%">
+</p>
+<p>The methodology involves two main components: training data generation, LLMs fine-tuning, and model evaluation. Training data is meticulously compiled and constructed with cybersecurity-specific instructions and conversations. The fine-tuning employs LoRA, focusing on optimizing instruction following and conversational abilities by freezing the original model weights and training additional network layers. They perform fine-tuning on the Llama and Vicuna models of 7B and 13B using instructions and conversations (default parameters are used in fine-tuning), respectively.</p>
+<p>The authors compiled and constructed <strong>instructional</strong> and <strong>conversational</strong> data specific to the cybersecurity domain. The guiding principles for this construction were richness, comprehensiveness, and security considerations.</p>
+<section id="cybersecurity-instructions" class="level3">
+<h3 class="anchored" data-anchor-id="cybersecurity-instructions">Cybersecurity Instructions</h3>
+<p>They described instructional data as comprising instruction (task descriptions for LLMs), input (optional context for the instruction task), and output (answers generated by LLMs).</p>
+<p>The creation process involves defining security instruction categories, creating seed instructions, and generating a comprehensive instructional dataset. They classified and organized task instructions related to cybersecurity, based on human expertise and GPT-4 categorization. For seed instructions, they constructed 144 seed instructions after meticulous curation to ensure quality, usability, and harmlessness, considering diverse aspects of cybersecurity knowledge. Last, they employ the self-instruct method and utilize the gpt-3.5-turbo model to generate a dataset comprising 14,000 instructions.</p>
+<section id="definition-of-cybersecurity-instruction-categories" class="level4">
+<h4 class="anchored" data-anchor-id="definition-of-cybersecurity-instruction-categories">Definition of Cybersecurity Instruction Categories</h4>
+<p>The authors curated 8 major categories of domain-related instruction types, as displayed in Table I. Then, considering the variations in diversity, content completeness, and the distinct forms of instructions, inputs, and outputs within each category, they employed LLMs to generate 200 sub-instructions for each category. Through manual review and selection, they derived a final set of 97 sub-categories of security instruction types specific to the cybersecurity domain.</p>
+<table class="table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 24%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Instruction Category</th>
+<th>Description</th>
+<th>Subcategory Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Concept Explanation</td>
+<td>Explain various concepts in cybersecurity, such as DDoS attacks, encryption algorithms, etc.</td>
+<td>15</td>
+</tr>
+<tr class="even">
+<td>Case Study</td>
+<td>Provide a cybersecurity case for the respondent to analyze the causes, impacts, and solutions.</td>
+<td>17</td>
+</tr>
+<tr class="odd">
+<td>Technical Solution</td>
+<td>Present a cybersecurity requirement or application scenario and ask for a technical implementation and solution.</td>
+<td>14</td>
+</tr>
+<tr class="even">
+<td>Practical Exercise</td>
+<td>Provide a simulated network environment for the respondent to engage in attack and defense exercises.</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>Security Management</td>
+<td>Propose cybersecurity management requirements and ask the respondent to formulate management strategies or plans, including security training, awareness, etc.</td>
+<td>14</td>
+</tr>
+<tr class="even">
+<td>Policy and Regulations</td>
+<td>Require explanations of laws and regulations related to network security, including privacy protection, data security, etc.</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>Scenario Assessment</td>
+<td>Provide a virtual cybersecurity scenario for the respondent to make judgments and decisions.</td>
+<td>11</td>
+</tr>
+<tr class="even">
+<td>Industry Applications</td>
+<td>Explore the application of cybersecurity in a specific industry, such as finance, healthcare, retail, etc.</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="generation-of-seed-instructions-for-cybersecurity" class="level4">
+<h4 class="anchored" data-anchor-id="generation-of-seed-instructions-for-cybersecurity">Generation of Seed Instructions for Cybersecurity</h4>
+<ul>
+<li>Open QA Data: The process starts by gathering over 200 QA pairs from the Internet. From these, 15 pairs are carefully selected as seed instructions, considering the types of answers and the QA styles.</li>
+<li>GPT-4 Zero-shot Generation: Utilizing Alpaca’s prompt customization for the security domain, GPT-4 generates one hundred instances of instruction input and output (IIO) data based on tailored prompts. A meticulous manual screening process follows, focusing on instruction repetition and expression richness, to finalize 19 seed instructions.</li>
+<li>Cybersecurity Instruction Categories: Based on major and sub-categories, LLMs are required to provide five question-answer pairs. These answers are manually scored on a scale of 1 to 5, with those scoring 5 selected as seed instructions, totaling 97 seed instructions.</li>
+<li>Cybersecurity NLP Tasks: The paper categorizes cybersecurity NLP tasks into major categories like classification, named entity recognition, event detection, and regression. For each sub-category, one instruction is collected, resulting in a total of 13 seed instructions.</li>
+</ul>
+</section>
+<section id="self-instruct-method-for-dataset-construction" class="level4">
+<h4 class="anchored" data-anchor-id="self-instruct-method-for-dataset-construction">Self-instruct Method for Dataset Construction</h4>
+<p>Leveraging the seed instructions, the self-instruct method is employed to construct the cybersecurity instruction dataset. This involves using the gpt-3.5-turbo model for generating instructions, ensuring diversity by retaining only those generated data with lower Rouge-L scores compared to existing instructions.</p>
+</section>
+</section>
+<section id="cybersecurity-conversations" class="level3">
+<h3 class="anchored" data-anchor-id="cybersecurity-conversations">Cybersecurity Conversations</h3>
+<p>Acknowledging the scarcity and difficulty in extracting standardized cybersecurity conversations, they incorporated an additional knowledge base specific to cybersecurity (such as Wikipedia) and used ChatGPT to generate relevant conversations.</p>
+<p>The knowledge base included unstructured text such as threat intelligence and cybersecurity taxonomies. They adhered to principles like cold start, domain dependency, contextual relevance, and logical hierarchy to ensure data rationality in conversation generation.</p>
+<p>To enhance the LLM’s understanding of prompts, they employed one-shot learning by providing an example to facilitate few-shot learning of ChatGPT, thereby generating the desired cybersecurity conversations.</p>
+</section>
+</section>
+<section id="experiment-discussion-and-summary" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-discussion-and-summary">Experiment Discussion and Summary:</h2>
+<p>The experimental evaluation uses metrics like WinRate, EloRating, and ZenoEval to compare HackMentor against traditional LLMs and benchmarks like ChatGPT. Results show that HackMentor significantly improves upon the capabilities of standard LLMs in cybersecurity contexts. The paper also discusses the challenges of training data scarcity and the balance between general and domain-specific performance​​.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ Last Update Aug. 2022
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
